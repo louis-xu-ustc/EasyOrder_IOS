@@ -27,6 +27,11 @@
 		9A8783B61F14B46D008BB5A5 /* search.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8783A61F14B46D008BB5A5 /* search.png */; };
 		9A8783B71F14B46D008BB5A5 /* shopping_cart.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8783A71F14B46D008BB5A5 /* shopping_cart.png */; };
 		9A8783B81F14B46D008BB5A5 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8783A81F14B46D008BB5A5 /* twitter.png */; };
+		9A902EF21F18A0E000AF799F /* shopping_cart_ios.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A902EF11F18A0E000AF799F /* shopping_cart_ios.png */; };
+		9A902EF51F18A3CF00AF799F /* CustomerMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A902EF41F18A3CF00AF799F /* CustomerMenuController.m */; };
+		9A902EF81F18A98700AF799F /* CustomerMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A902EF71F18A98700AF799F /* CustomerMapController.m */; };
+		9A902EFB1F18B04700AF799F /* CustomerPaymentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A902EFA1F18B04700AF799F /* CustomerPaymentController.m */; };
+		9A902EFE1F18B41500AF799F /* CustomerProfileController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A902EFD1F18B41500AF799F /* CustomerProfileController.m */; };
 		9AF467401F15ED0E005AF8CC /* RetailerPostController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF4673F1F15ED0E005AF8CC /* RetailerPostController.m */; };
 		9AF467431F15FF5E005AF8CC /* RetailerMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF467421F15FF5E005AF8CC /* RetailerMapController.m */; };
 		9AF467461F16028B005AF8CC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF467451F16028B005AF8CC /* MapKit.framework */; };
@@ -58,6 +63,15 @@
 		9A8783A61F14B46D008BB5A5 /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = search.png; path = drawable/search.png; sourceTree = "<group>"; };
 		9A8783A71F14B46D008BB5A5 /* shopping_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shopping_cart.png; path = drawable/shopping_cart.png; sourceTree = "<group>"; };
 		9A8783A81F14B46D008BB5A5 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = twitter.png; path = drawable/twitter.png; sourceTree = "<group>"; };
+		9A902EF11F18A0E000AF799F /* shopping_cart_ios.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shopping_cart_ios.png; path = drawable/shopping_cart_ios.png; sourceTree = "<group>"; };
+		9A902EF31F18A3CF00AF799F /* CustomerMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerMenuController.h; sourceTree = "<group>"; };
+		9A902EF41F18A3CF00AF799F /* CustomerMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerMenuController.m; sourceTree = "<group>"; };
+		9A902EF61F18A98700AF799F /* CustomerMapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerMapController.h; sourceTree = "<group>"; };
+		9A902EF71F18A98700AF799F /* CustomerMapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerMapController.m; sourceTree = "<group>"; };
+		9A902EF91F18B04700AF799F /* CustomerPaymentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerPaymentController.h; sourceTree = "<group>"; };
+		9A902EFA1F18B04700AF799F /* CustomerPaymentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerPaymentController.m; sourceTree = "<group>"; };
+		9A902EFC1F18B41500AF799F /* CustomerProfileController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerProfileController.h; sourceTree = "<group>"; };
+		9A902EFD1F18B41500AF799F /* CustomerProfileController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerProfileController.m; sourceTree = "<group>"; };
 		9AF4673E1F15ED0E005AF8CC /* RetailerPostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetailerPostController.h; sourceTree = "<group>"; };
 		9AF4673F1F15ED0E005AF8CC /* RetailerPostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetailerPostController.m; sourceTree = "<group>"; };
 		9AF467411F15FF5E005AF8CC /* RetailerMapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetailerMapController.h; sourceTree = "<group>"; };
@@ -104,9 +118,17 @@
 				46DD2BFF1F0D3FE900FE410E /* ViewController.h */,
 				46DD2C001F0D3FE900FE410E /* ViewController.m */,
 				46DD2C021F0D3FE900FE410E /* Main.storyboard */,
+				9A902EFC1F18B41500AF799F /* CustomerProfileController.h */,
+				9A902EFD1F18B41500AF799F /* CustomerProfileController.m */,
+				9A902EF91F18B04700AF799F /* CustomerPaymentController.h */,
+				9A902EFA1F18B04700AF799F /* CustomerPaymentController.m */,
+				9A902EF31F18A3CF00AF799F /* CustomerMenuController.h */,
+				9A902EF41F18A3CF00AF799F /* CustomerMenuController.m */,
 				9AF467471F1608DB005AF8CC /* RetailerOrderController.h */,
 				9AF467481F1608DB005AF8CC /* RetailerOrderController.m */,
 				9AF467411F15FF5E005AF8CC /* RetailerMapController.h */,
+				9A902EF61F18A98700AF799F /* CustomerMapController.h */,
+				9A902EF71F18A98700AF799F /* CustomerMapController.m */,
 				9AF467421F15FF5E005AF8CC /* RetailerMapController.m */,
 				9AF4673E1F15ED0E005AF8CC /* RetailerPostController.h */,
 				9AF4673F1F15ED0E005AF8CC /* RetailerPostController.m */,
@@ -121,6 +143,7 @@
 		46DD2BF91F0D3FE900FE410E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9A902EF11F18A0E000AF799F /* shopping_cart_ios.png */,
 				9A8783991F14B46D008BB5A5 /* add_circle.png */,
 				9A87839A1F14B46D008BB5A5 /* add.png */,
 				9A87839C1F14B46D008BB5A5 /* default_avartar.png */,
@@ -219,6 +242,7 @@
 				9A8783B51F14B46D008BB5A5 /* salad.jpeg in Resources */,
 				9A8783B31F14B46D008BB5A5 /* pizza.png in Resources */,
 				9A8783AC1F14B46D008BB5A5 /* default_avartar.png in Resources */,
+				9A902EF21F18A0E000AF799F /* shopping_cart_ios.png in Resources */,
 				9A8783AE1F14B46D008BB5A5 /* easy_order_login_background.jpg in Resources */,
 				9A8783B21F14B46D008BB5A5 /* order_list.png in Resources */,
 				46DD2C061F0D3FE900FE410E /* Assets.xcassets in Resources */,
@@ -240,10 +264,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF467491F1608DB005AF8CC /* RetailerOrderController.m in Sources */,
+				9A902EF51F18A3CF00AF799F /* CustomerMenuController.m in Sources */,
 				9AF467431F15FF5E005AF8CC /* RetailerMapController.m in Sources */,
 				46DD2C011F0D3FE900FE410E /* ViewController.m in Sources */,
+				9A902EFB1F18B04700AF799F /* CustomerPaymentController.m in Sources */,
+				9A902EFE1F18B41500AF799F /* CustomerProfileController.m in Sources */,
 				9AF467401F15ED0E005AF8CC /* RetailerPostController.m in Sources */,
 				46DD2BFE1F0D3FE900FE410E /* AppDelegate.m in Sources */,
+				9A902EF81F18A98700AF799F /* CustomerMapController.m in Sources */,
 				46DD2BFB1F0D3FE900FE410E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
