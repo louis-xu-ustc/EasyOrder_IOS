@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46D7542D1F1E6C450040FC3F /* Dish.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D7542C1F1E6C450040FC3F /* Dish.m */; };
 		46DD2BFB1F0D3FE900FE410E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DD2BFA1F0D3FE900FE410E /* main.m */; };
 		46DD2BFE1F0D3FE900FE410E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DD2BFD1F0D3FE900FE410E /* AppDelegate.m */; };
 		46DD2C011F0D3FE900FE410E /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DD2C001F0D3FE900FE410E /* LoginViewController.m */; };
@@ -39,6 +40,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		46D7542B1F1E6C450040FC3F /* Dish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dish.h; sourceTree = "<group>"; };
+		46D7542C1F1E6C450040FC3F /* Dish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dish.m; sourceTree = "<group>"; };
 		46DD2BF61F0D3FE900FE410E /* EasyOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46DD2BFA1F0D3FE900FE410E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		46DD2BFC1F0D3FE900FE410E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -124,6 +127,8 @@
 				9A902EFA1F18B04700AF799F /* CustomerPaymentController.m */,
 				9A902EF31F18A3CF00AF799F /* CustomerMenuController.h */,
 				9A902EF41F18A3CF00AF799F /* CustomerMenuController.m */,
+				46D7542B1F1E6C450040FC3F /* Dish.h */,
+				46D7542C1F1E6C450040FC3F /* Dish.m */,
 				9AF467471F1608DB005AF8CC /* RetailerOrderController.h */,
 				9AF467481F1608DB005AF8CC /* RetailerOrderController.m */,
 				9AF467411F15FF5E005AF8CC /* RetailerMapController.h */,
@@ -273,6 +278,7 @@
 				46DD2BFE1F0D3FE900FE410E /* AppDelegate.m in Sources */,
 				9A902EF81F18A98700AF799F /* CustomerMapController.m in Sources */,
 				46DD2BFB1F0D3FE900FE410E /* main.m in Sources */,
+				46D7542D1F1E6C450040FC3F /* Dish.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

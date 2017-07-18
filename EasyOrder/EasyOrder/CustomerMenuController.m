@@ -9,7 +9,9 @@
 #import "CustomerMenuController.h"
 
 @interface CustomerMenuController ()
-
+{
+    NSArray *_dishes;
+}
 @end
 
 @implementation CustomerMenuController
@@ -22,6 +24,9 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
+    [self fetchLatestMenu];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,21 +37,80 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 1;
+    return _dishes.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"menuCell" forIndexPath:indexPath];
     
     // Configure the cell...
+    // tag 0: image
+    // tag 1: title
+    // tag 2: price
+    
+    NSDictionary *dish = [_dishes objectAtIndex: indexPath.row];
+    
+    NSLog(@"DEBUG: %@", dish);
+    
+    NSURL *url = [NSURL URLWithString:
+                  [NSString stringWithFormat:@"http://54.202.127.83%@", [dish objectForKey:@"photo"]]];
+
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:0];
+    UILabel *title = (UILabel *)[cell viewWithTag:1];
+    UILabel *price = (UILabel *)[cell viewWithTag:2];
+
+    title.text = [dish objectForKey:@"name"];
+    price.text = [NSString stringWithFormat:@"$ %@", [dish objectForKey:@"price"]];
+    
+    NSURLSessionTask *task = [[NSURLSession sharedSession]
+                              dataTaskWithURL:url
+                              completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data) {
+            UIImage *image = [UIImage imageWithData:data];
+            if (image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    imageView.image = image;
+                    NSLog(@"(W, H): %f, %f", imageView.frame.size.width, imageView.frame.size.height);
+                    NSLog(@"(X, Y): %f, %f", imageView.frame.origin.x, imageView.frame.origin.y);
+                });
+            }
+        }
+    }];
+    [task resume];
     
     return cell;
+}
+
+- (void)fetchLatestMenu {
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    [[session dataTaskWithURL:[NSURL URLWithString:@"http://54.202.127.83/backend/dish/"]
+            completionHandler:^(NSData *data, NSURLResponse *resp, NSError *error) {
+                
+                // handle response in the background thread
+                if (data.length > 0 && error == nil) {
+                    _dishes = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+                    
+                    for(NSDictionary *item in _dishes){
+                        
+                        NSLog(@"%@: %@",[item objectForKey:@"name"],[item objectForKey:@"photo"]);
+                    }
+                    
+                    if(_dishes.count > 0) {
+                        dispatch_async(dispatch_get_main_queue(),^{
+                            [self.tableView reloadData];
+                        });
+                    } //end of if
+                }
+                else if(error != nil) {
+                    NSLog(@"Error (%li): %@", error.code, error.domain);
+                }
+                
+            }] resume];
 }
 
 /*
