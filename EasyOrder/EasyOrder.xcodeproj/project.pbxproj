@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		46DD2BFB1F0D3FE900FE410E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DD2BFA1F0D3FE900FE410E /* main.m */; };
 		46DD2BFE1F0D3FE900FE410E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DD2BFD1F0D3FE900FE410E /* AppDelegate.m */; };
-		46DD2C011F0D3FE900FE410E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DD2C001F0D3FE900FE410E /* ViewController.m */; };
+		46DD2C011F0D3FE900FE410E /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DD2C001F0D3FE900FE410E /* LoginViewController.m */; };
 		46DD2C041F0D3FE900FE410E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46DD2C021F0D3FE900FE410E /* Main.storyboard */; };
 		46DD2C061F0D3FE900FE410E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46DD2C051F0D3FE900FE410E /* Assets.xcassets */; };
 		46DD2C091F0D3FE900FE410E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46DD2C071F0D3FE900FE410E /* LaunchScreen.storyboard */; };
@@ -43,8 +43,8 @@
 		46DD2BFA1F0D3FE900FE410E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		46DD2BFC1F0D3FE900FE410E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		46DD2BFD1F0D3FE900FE410E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		46DD2BFF1F0D3FE900FE410E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		46DD2C001F0D3FE900FE410E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		46DD2BFF1F0D3FE900FE410E /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		46DD2C001F0D3FE900FE410E /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		46DD2C031F0D3FE900FE410E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		46DD2C051F0D3FE900FE410E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		46DD2C081F0D3FE900FE410E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -115,8 +115,8 @@
 			children = (
 				46DD2BFC1F0D3FE900FE410E /* AppDelegate.h */,
 				46DD2BFD1F0D3FE900FE410E /* AppDelegate.m */,
-				46DD2BFF1F0D3FE900FE410E /* ViewController.h */,
-				46DD2C001F0D3FE900FE410E /* ViewController.m */,
+				46DD2BFF1F0D3FE900FE410E /* LoginViewController.h */,
+				46DD2C001F0D3FE900FE410E /* LoginViewController.m */,
 				46DD2C021F0D3FE900FE410E /* Main.storyboard */,
 				9A902EFC1F18B41500AF799F /* CustomerProfileController.h */,
 				9A902EFD1F18B41500AF799F /* CustomerProfileController.m */,
@@ -266,7 +266,7 @@
 				9AF467491F1608DB005AF8CC /* RetailerOrderController.m in Sources */,
 				9A902EF51F18A3CF00AF799F /* CustomerMenuController.m in Sources */,
 				9AF467431F15FF5E005AF8CC /* RetailerMapController.m in Sources */,
-				46DD2C011F0D3FE900FE410E /* ViewController.m in Sources */,
+				46DD2C011F0D3FE900FE410E /* LoginViewController.m in Sources */,
 				9A902EFB1F18B04700AF799F /* CustomerPaymentController.m in Sources */,
 				9A902EFE1F18B41500AF799F /* CustomerProfileController.m in Sources */,
 				9AF467401F15ED0E005AF8CC /* RetailerPostController.m in Sources */,

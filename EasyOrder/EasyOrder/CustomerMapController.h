@@ -13,9 +13,7 @@
 @interface CustomerMapController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) CLGeocoder *geocoder;
-@property (nonatomic, strong) CLLocation *location;
 
 @end
