@@ -53,9 +53,6 @@
     // tag 2: price
     
     NSDictionary *dish = [_dishes objectAtIndex: indexPath.row];
-    
-    NSLog(@"DEBUG: %@", dish);
-    
     NSURL *url = [NSURL URLWithString:
                   [NSString stringWithFormat:@"http://54.202.127.83%@", [dish objectForKey:@"photo"]]];
 
@@ -74,8 +71,6 @@
             if (image) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     imageView.image = image;
-                    NSLog(@"(W, H): %f, %f", imageView.frame.size.width, imageView.frame.size.height);
-                    NSLog(@"(X, Y): %f, %f", imageView.frame.origin.x, imageView.frame.origin.y);
                 });
             }
         }
