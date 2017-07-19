@@ -33,6 +33,7 @@
 		9A902EF81F18A98700AF799F /* CustomerMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A902EF71F18A98700AF799F /* CustomerMapController.m */; };
 		9A902EFB1F18B04700AF799F /* CustomerPaymentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A902EFA1F18B04700AF799F /* CustomerPaymentController.m */; };
 		9A902EFE1F18B41500AF799F /* CustomerProfileController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A902EFD1F18B41500AF799F /* CustomerProfileController.m */; };
+		9AC0E9F71F1F3233006DB1CE /* CustomerMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC0E9F61F1F3233006DB1CE /* CustomerMenuCell.m */; };
 		9AF467401F15ED0E005AF8CC /* RetailerPostController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF4673F1F15ED0E005AF8CC /* RetailerPostController.m */; };
 		9AF467431F15FF5E005AF8CC /* RetailerMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF467421F15FF5E005AF8CC /* RetailerMapController.m */; };
 		9AF467461F16028B005AF8CC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF467451F16028B005AF8CC /* MapKit.framework */; };
@@ -75,6 +76,8 @@
 		9A902EFA1F18B04700AF799F /* CustomerPaymentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerPaymentController.m; sourceTree = "<group>"; };
 		9A902EFC1F18B41500AF799F /* CustomerProfileController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerProfileController.h; sourceTree = "<group>"; };
 		9A902EFD1F18B41500AF799F /* CustomerProfileController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerProfileController.m; sourceTree = "<group>"; };
+		9AC0E9F51F1F3233006DB1CE /* CustomerMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerMenuCell.h; sourceTree = "<group>"; };
+		9AC0E9F61F1F3233006DB1CE /* CustomerMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerMenuCell.m; sourceTree = "<group>"; };
 		9AF4673E1F15ED0E005AF8CC /* RetailerPostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetailerPostController.h; sourceTree = "<group>"; };
 		9AF4673F1F15ED0E005AF8CC /* RetailerPostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetailerPostController.m; sourceTree = "<group>"; };
 		9AF467411F15FF5E005AF8CC /* RetailerMapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetailerMapController.h; sourceTree = "<group>"; };
@@ -121,6 +124,8 @@
 				46DD2BFF1F0D3FE900FE410E /* LoginViewController.h */,
 				46DD2C001F0D3FE900FE410E /* LoginViewController.m */,
 				46DD2C021F0D3FE900FE410E /* Main.storyboard */,
+				9AC0E9F51F1F3233006DB1CE /* CustomerMenuCell.h */,
+				9AC0E9F61F1F3233006DB1CE /* CustomerMenuCell.m */,
 				9A902EFC1F18B41500AF799F /* CustomerProfileController.h */,
 				9A902EFD1F18B41500AF799F /* CustomerProfileController.m */,
 				9A902EF91F18B04700AF799F /* CustomerPaymentController.h */,
@@ -272,6 +277,7 @@
 				9A902EF51F18A3CF00AF799F /* CustomerMenuController.m in Sources */,
 				9AF467431F15FF5E005AF8CC /* RetailerMapController.m in Sources */,
 				46DD2C011F0D3FE900FE410E /* LoginViewController.m in Sources */,
+				9AC0E9F71F1F3233006DB1CE /* CustomerMenuCell.m in Sources */,
 				9A902EFB1F18B04700AF799F /* CustomerPaymentController.m in Sources */,
 				9A902EFE1F18B41500AF799F /* CustomerProfileController.m in Sources */,
 				9AF467401F15ED0E005AF8CC /* RetailerPostController.m in Sources */,

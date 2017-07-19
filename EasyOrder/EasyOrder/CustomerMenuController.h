@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CustomerMenuCell.h"
 
 @interface CustomerMenuController : UITableViewController
+
+@property (nonatomic, strong) NSMutableDictionary *imageCache;
 
 @end

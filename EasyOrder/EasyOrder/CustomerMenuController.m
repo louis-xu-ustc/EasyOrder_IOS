@@ -25,6 +25,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    _imageCache = [NSMutableDictionary dictionary];
     self.tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
     [self fetchLatestMenu];
 }
@@ -45,37 +46,39 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"menuCell" forIndexPath:indexPath];
+    CustomerMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"menuCell" forIndexPath:indexPath];
     
     // Configure the cell...
-    // tag 0: image
-    // tag 1: title
-    // tag 2: price
     
     NSDictionary *dish = [_dishes objectAtIndex: indexPath.row];
     NSURL *url = [NSURL URLWithString:
                   [NSString stringWithFormat:@"http://54.202.127.83%@", [dish objectForKey:@"photo"]]];
 
-    UIImageView *imageView = (UIImageView *)[cell viewWithTag:0];
-    UILabel *title = (UILabel *)[cell viewWithTag:1];
-    UILabel *price = (UILabel *)[cell viewWithTag:2];
+    UIImageView *imageView = cell.image;
 
-    title.text = [dish objectForKey:@"name"];
-    price.text = [NSString stringWithFormat:@"$ %@", [dish objectForKey:@"price"]];
-    
-    NSURLSessionTask *task = [[NSURLSession sharedSession]
-                              dataTaskWithURL:url
-                              completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (data) {
-            UIImage *image = [UIImage imageWithData:data];
-            if (image) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    imageView.image = image;
-                });
+    cell.title.text = [dish objectForKey:@"name"];
+    cell.price.text = [NSString stringWithFormat:@"$ %@", [dish objectForKey:@"price"]];
+    UIImage *image = [_imageCache objectForKey:url];
+    if (image) {
+        imageView.image = image;
+    } else {
+        NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (data) {
+                UIImage *image = [UIImage imageWithData:data];
+                if (image) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [_imageCache setObject:image forKey:url];
+                        NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
+                        if ([visiblePaths containsObject:indexPath]) {
+                            NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
+                            [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+                        }
+                    });
+                }
             }
-        }
-    }];
-    [task resume];
+        }];
+        [task resume];
+    }
     
     return cell;
 }

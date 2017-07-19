@@ -10,6 +10,8 @@
 
 @interface RetailerPostController : UITableViewController
 
+@property (nonatomic, strong) NSMutableDictionary *imageCache;
+
 - (IBAction)addPost:(id)sender;
 
 @end
