@@ -25,7 +25,6 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    _imageCache = [NSMutableDictionary dictionary];
     self.tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
     [self fetchLatestMenu];
 }
@@ -58,7 +57,7 @@
     cell.title.text = [dish objectForKey:@"name"];
     cell.price.text = [NSString stringWithFormat:@"$ %@", [dish objectForKey:@"price"]];
     
-    if (cell.imageView.image == nil) {
+    if (cell.image.image == nil) {
     
         NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if (data) {
@@ -66,7 +65,7 @@
                 if (image) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
-                        cell.imageView.image = image;
+                        cell.image.image = image;
                         [cell setNeedsLayout];
                     });
                 }
@@ -87,11 +86,6 @@
                 // handle response in the background thread
                 if (data.length > 0 && error == nil) {
                     _dishes = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-                    
-                    for(NSDictionary *item in _dishes){
-                        
-                        NSLog(@"%@: %@",[item objectForKey:@"name"],[item objectForKey:@"photo"]);
-                    }
                     
                     if(_dishes.count > 0) {
                         dispatch_async(dispatch_get_main_queue(),^{

@@ -11,6 +11,4 @@
 
 @interface CustomerMenuController : UITableViewController
 
-@property (nonatomic, strong) NSMutableDictionary *imageCache;
-
 @end

@@ -7,9 +7,13 @@
 //
 
 #import "CustomerProfileController.h"
+#import "CustomerTabBarController.h"
 
 @interface CustomerProfileController ()
-
+{
+    __weak IBOutlet UIImageView *_profileImageView;
+    __weak IBOutlet UILabel *_profileUserName;
+}
 @end
 
 @implementation CustomerProfileController
@@ -31,6 +35,10 @@
     // Do any additional setup after loading the view.
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    
+    CustomerTabBarController *controller = (CustomerTabBarController *)self.tabBarController;
+    _profileUserName.text = controller.profileUserName;
+    _profileImageView.image = controller.profileImage;
 }
 
 - (void)didReceiveMemoryWarning {
