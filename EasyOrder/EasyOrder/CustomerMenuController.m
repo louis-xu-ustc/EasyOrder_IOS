@@ -54,25 +54,20 @@
     NSURL *url = [NSURL URLWithString:
                   [NSString stringWithFormat:@"http://54.202.127.83%@", [dish objectForKey:@"photo"]]];
 
-    UIImageView *imageView = cell.image;
 
     cell.title.text = [dish objectForKey:@"name"];
     cell.price.text = [NSString stringWithFormat:@"$ %@", [dish objectForKey:@"price"]];
-    UIImage *image = [_imageCache objectForKey:url];
-    if (image) {
-        imageView.image = image;
-    } else {
+    
+    if (cell.imageView.image == nil) {
+    
         NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if (data) {
                 UIImage *image = [UIImage imageWithData:data];
                 if (image) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [_imageCache setObject:image forKey:url];
-                        NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
-                        if ([visiblePaths containsObject:indexPath]) {
-                            NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
-                            [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-                        }
+                        
+                        cell.imageView.image = image;
+                        [cell setNeedsLayout];
                     });
                 }
             }
