@@ -13,6 +13,6 @@
 @property (strong, nonatomic) NSString *dishName;
 @property (strong, nonatomic) NSString *dishDesription;
 @property (assign, nonatomic) NSInteger dishPrice;
-@property (strong, nonatomic) NSString *dishNumber;
+@property (assign, nonatomic) NSInteger dishNumber;
 
 @end

@@ -14,6 +14,7 @@
 		46DD2C041F0D3FE900FE410E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46DD2C021F0D3FE900FE410E /* Main.storyboard */; };
 		46DD2C061F0D3FE900FE410E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46DD2C051F0D3FE900FE410E /* Assets.xcassets */; };
 		46DD2C091F0D3FE900FE410E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46DD2C071F0D3FE900FE410E /* LaunchScreen.storyboard */; };
+		9A034AD61F21763A00D20478 /* CustomerCartController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A034AD51F21763A00D20478 /* CustomerCartController.m */; };
 		9A8783A91F14B46D008BB5A5 /* add_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8783991F14B46D008BB5A5 /* add_circle.png */; };
 		9A8783AA1F14B46D008BB5A5 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A87839A1F14B46D008BB5A5 /* add.png */; };
 		9A8783AC1F14B46D008BB5A5 /* default_avartar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A87839C1F14B46D008BB5A5 /* default_avartar.png */; };
@@ -53,6 +54,8 @@
 		46DD2C051F0D3FE900FE410E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		46DD2C081F0D3FE900FE410E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		46DD2C0A1F0D3FE900FE410E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A034AD41F21763A00D20478 /* CustomerCartController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerCartController.h; sourceTree = "<group>"; };
+		9A034AD51F21763A00D20478 /* CustomerCartController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerCartController.m; sourceTree = "<group>"; };
 		9A8783991F14B46D008BB5A5 /* add_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add_circle.png; path = drawable/add_circle.png; sourceTree = "<group>"; };
 		9A87839A1F14B46D008BB5A5 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add.png; path = drawable/add.png; sourceTree = "<group>"; };
 		9A87839C1F14B46D008BB5A5 /* default_avartar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_avartar.png; path = drawable/default_avartar.png; sourceTree = "<group>"; };
@@ -124,6 +127,8 @@
 				46DD2BFF1F0D3FE900FE410E /* LoginViewController.h */,
 				46DD2C001F0D3FE900FE410E /* LoginViewController.m */,
 				46DD2C021F0D3FE900FE410E /* Main.storyboard */,
+				9A034AD41F21763A00D20478 /* CustomerCartController.h */,
+				9A034AD51F21763A00D20478 /* CustomerCartController.m */,
 				9AC0E9F51F1F3233006DB1CE /* CustomerMenuCell.h */,
 				9AC0E9F61F1F3233006DB1CE /* CustomerMenuCell.m */,
 				9A902EFC1F18B41500AF799F /* CustomerProfileController.h */,
@@ -277,6 +282,7 @@
 				9A902EF51F18A3CF00AF799F /* CustomerMenuController.m in Sources */,
 				9AF467431F15FF5E005AF8CC /* RetailerMapController.m in Sources */,
 				46DD2C011F0D3FE900FE410E /* LoginViewController.m in Sources */,
+				9A034AD61F21763A00D20478 /* CustomerCartController.m in Sources */,
 				9AC0E9F71F1F3233006DB1CE /* CustomerMenuCell.m in Sources */,
 				9A902EFB1F18B04700AF799F /* CustomerPaymentController.m in Sources */,
 				9A902EFE1F18B41500AF799F /* CustomerProfileController.m in Sources */,

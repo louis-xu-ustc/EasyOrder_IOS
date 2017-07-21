@@ -9,9 +9,6 @@
 #import "CustomerMenuCell.h"
 
 @interface CustomerMenuCell()
-{
-    int count;
-}
 
 @end
 
@@ -20,8 +17,9 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    count = 0;
-    _quantity.text = [NSString stringWithFormat:@"%d", count];
+    _count = 0;
+    _position = -1;
+    _quantity.text = [NSString stringWithFormat:@"%d", _count];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -31,14 +29,21 @@
 }
 
 - (IBAction)add:(id)sender {
-    count++;
-    _quantity.text = [NSString stringWithFormat:@"%d", count];
+    _count++;
+    _quantity.text = [NSString stringWithFormat:@"%d", _count];
+    [_delegate onMenuItemChange:self];
 }
 
 - (IBAction)remove:(id)sender {
-    if (count > 0) {
-        count--;
-        _quantity.text = [NSString stringWithFormat:@"%d", count];
+    if (_count > 0) {
+        _count--;
+        _quantity.text = [NSString stringWithFormat:@"%d", _count];
+        [_delegate onMenuItemChange:self];
     }
 }
+
+- (void)setPosition:(NSInteger)position {
+    _position = position;
+}
+
 @end

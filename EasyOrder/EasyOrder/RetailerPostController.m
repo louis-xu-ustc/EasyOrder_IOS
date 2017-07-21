@@ -56,7 +56,7 @@
                   [NSString stringWithFormat:@"http://54.202.127.83%@", [dish objectForKey:@"photo"]]];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:0];
-    UILabel *title = (UILabel *)[cell viewWithTag:0];
+    UILabel *title = (UILabel *)[cell viewWithTag:3];
     UILabel *price = (UILabel *)[cell viewWithTag:1];
     UILabel *quantity = (UILabel *)[cell viewWithTag:2];
     
