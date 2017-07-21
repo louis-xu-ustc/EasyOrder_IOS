@@ -10,6 +10,7 @@
 
 @interface CustomerProfileController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
+@property (weak, nonatomic) IBOutlet UIView *profileView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end

@@ -10,9 +10,12 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
+#import "HistoricalOrderTableView.h"
+
 @interface CustomerMapController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet HistoricalOrderTableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *titleView;
 
 @end

@@ -19,6 +19,7 @@
 		46DD2C041F0D3FE900FE410E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46DD2C021F0D3FE900FE410E /* Main.storyboard */; };
 		46DD2C061F0D3FE900FE410E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46DD2C051F0D3FE900FE410E /* Assets.xcassets */; };
 		46DD2C091F0D3FE900FE410E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46DD2C071F0D3FE900FE410E /* LaunchScreen.storyboard */; };
+		46E3CDD01F21D19900EEE754 /* HistoricalOrderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E3CDCF1F21D19900EEE754 /* HistoricalOrderTableView.m */; };
 		9A8783A91F14B46D008BB5A5 /* add_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8783991F14B46D008BB5A5 /* add_circle.png */; };
 		9A8783AA1F14B46D008BB5A5 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A87839A1F14B46D008BB5A5 /* add.png */; };
 		9A8783AC1F14B46D008BB5A5 /* default_avartar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A87839C1F14B46D008BB5A5 /* default_avartar.png */; };
@@ -64,6 +65,8 @@
 		46DD2C051F0D3FE900FE410E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		46DD2C081F0D3FE900FE410E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		46DD2C0A1F0D3FE900FE410E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46E3CDCE1F21D19900EEE754 /* HistoricalOrderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoricalOrderTableView.h; sourceTree = "<group>"; };
+		46E3CDCF1F21D19900EEE754 /* HistoricalOrderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoricalOrderTableView.m; sourceTree = "<group>"; };
 		9A8783991F14B46D008BB5A5 /* add_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add_circle.png; path = drawable/add_circle.png; sourceTree = "<group>"; };
 		9A87839A1F14B46D008BB5A5 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add.png; path = drawable/add.png; sourceTree = "<group>"; };
 		9A87839C1F14B46D008BB5A5 /* default_avartar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_avartar.png; path = drawable/default_avartar.png; sourceTree = "<group>"; };
@@ -159,6 +162,8 @@
 				46DD2C071F0D3FE900FE410E /* LaunchScreen.storyboard */,
 				46DD2C0A1F0D3FE900FE410E /* Info.plist */,
 				46DD2BF91F0D3FE900FE410E /* Supporting Files */,
+				46E3CDCE1F21D19900EEE754 /* HistoricalOrderTableView.h */,
+				46E3CDCF1F21D19900EEE754 /* HistoricalOrderTableView.m */,
 			);
 			path = EasyOrder;
 			sourceTree = "<group>";
@@ -304,6 +309,7 @@
 				9AF467401F15ED0E005AF8CC /* RetailerPostController.m in Sources */,
 				46DD2BFE1F0D3FE900FE410E /* AppDelegate.m in Sources */,
 				461356C31F21101A00142211 /* CustomerTabBarController.m in Sources */,
+				46E3CDD01F21D19900EEE754 /* HistoricalOrderTableView.m in Sources */,
 				9A902EF81F18A98700AF799F /* CustomerMapController.m in Sources */,
 				46DD2BFB1F0D3FE900FE410E /* main.m in Sources */,
 				46D7542D1F1E6C450040FC3F /* Dish.m in Sources */,

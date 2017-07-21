@@ -81,8 +81,6 @@
                 }
             }];
             [task resume];
-            
-            NSLog(@"%@", json);
         }
         else{
             NSLog(@"An error occurs here.");

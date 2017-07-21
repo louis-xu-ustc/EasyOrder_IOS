@@ -70,7 +70,7 @@
                 if ([param rangeOfString:@"oauth_token"].length > 0) {
                     accessToken = [[[param componentsSeparatedByString:@"="] objectAtIndex:1] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                     
-                    NSLog(@"AccessToken: %@", accessToken);
+//                    NSLog(@"AccessToken: %@", accessToken);
                     [controller setAccessToken:accessToken];
                     [self presentViewController:controller animated:YES completion:nil];
                     break;
