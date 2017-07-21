@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "CustomerMenuCell.h"
+#import "Dish.h"
+#import "CustomerCartController.h"
 
-@interface CustomerMenuController : UITableViewController
+@interface CustomerMenuController : UITableViewController <CustomerMenuCellDelegate>
+
+@property (nonatomic, strong) NSMutableDictionary *data;
+
+- (IBAction)cart:(id)sender;
 
 @end

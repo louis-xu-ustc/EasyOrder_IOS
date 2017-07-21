@@ -25,6 +25,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    _data = [[NSMutableDictionary alloc] init];
     self.tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
     [self fetchLatestMenu];
 }
@@ -46,6 +47,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     CustomerMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"menuCell" forIndexPath:indexPath];
+    [cell setPosition:indexPath.row];
+    cell.delegate = self;
     
     // Configure the cell...
     
@@ -57,7 +60,7 @@
     cell.title.text = [dish objectForKey:@"name"];
     cell.price.text = [NSString stringWithFormat:@"$ %@", [dish objectForKey:@"price"]];
     
-    if (cell.image.image == nil) {
+    if (cell.imageView.image == nil) {
     
         NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if (data) {
@@ -65,7 +68,7 @@
                 if (image) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
-                        cell.image.image = image;
+                        cell.imageView.image = image;
                         [cell setNeedsLayout];
                     });
                 }
@@ -86,6 +89,15 @@
                 // handle response in the background thread
                 if (data.length > 0 && error == nil) {
                     _dishes = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+                    
+                    for(int i = 0; i < _dishes.count; i++){
+                        NSDictionary *item = [_dishes objectAtIndex:i];
+                        Dish *dish = [[Dish alloc] init];
+                        dish.dishPrice = [item objectForKey:@"price"];
+                        dish.dishName = [item objectForKey:@"name"];
+                        dish.dishNumber = 0;
+                        [_data setObject:dish forKey:[NSString stringWithFormat:@"%d", i]];
+                    }
                     
                     if(_dishes.count > 0) {
                         dispatch_async(dispatch_get_main_queue(),^{
@@ -143,5 +155,36 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)onMenuItemChange:(CustomerMenuCell *)cell {
+    Dish *dish = [_data objectForKey:[NSString stringWithFormat:@"%d", cell.position]];
+    dish.dishNumber = cell.count;
+}
+
+- (IBAction)cart:(id)sender {
+    NSMutableDictionary *inputData = [[NSMutableDictionary alloc] init];
+    int i = 0;
+    for (id key in _data) {
+        Dish *dish = [_data objectForKey:key];
+        if (dish.dishNumber > 0) {
+            [inputData setObject:dish forKey:[NSString stringWithFormat:@"%d", i]];
+            i++;
+        }
+    }
+    CustomerCartController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"cartTable"];
+    [controller setData:inputData];
+    
+    CGRect rect = CGRectMake(0, 0, 330, 350);
+    [controller setPreferredContentSize:rect.size];
+    UIAlertController *dialog = [UIAlertController alertControllerWithTitle:@"Order Details" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [dialog setValue:controller forKey:@"contentViewController"];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // TODO: Upload data.
+    }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
+    [dialog addAction:confirm];
+    [dialog addAction:cancel];
+    [self presentViewController:dialog animated:YES completion:nil];
+}
 
 @end
