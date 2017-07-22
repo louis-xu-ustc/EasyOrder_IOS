@@ -58,7 +58,7 @@
     Dish *dish = [data objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]];
     title.text = dish.dishName;
     quantity.text = [NSString stringWithFormat:@"%d", dish.dishNumber];
-    totalPrice.text = [NSString stringWithFormat:@"$ %d", dish.dishNumber * dish.dishPrice];
+    totalPrice.text = [NSString stringWithFormat:@"$ %.02f", dish.dishNumber * dish.dishPrice];
     
     return cell;
 }

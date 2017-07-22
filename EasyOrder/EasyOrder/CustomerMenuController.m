@@ -93,7 +93,7 @@
                     for(int i = 0; i < _dishes.count; i++){
                         NSDictionary *item = [_dishes objectAtIndex:i];
                         Dish *dish = [[Dish alloc] init];
-                        dish.dishPrice = [item objectForKey:@"price"];
+                        dish.dishPrice = [[item objectForKey:@"price"] doubleValue];
                         dish.dishName = [item objectForKey:@"name"];
                         dish.dishNumber = 0;
                         [_data setObject:dish forKey:[NSString stringWithFormat:@"%d", i]];
