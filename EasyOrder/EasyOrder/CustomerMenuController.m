@@ -157,7 +157,7 @@
 */
 
 - (void)onMenuItemChange:(CustomerMenuCell *)cell {
-    Dish *dish = [_data objectForKey:[NSString stringWithFormat:@"%d", cell.position]];
+    Dish *dish = [_data objectForKey:[NSString stringWithFormat:@"%li", cell.position]];
     dish.dishNumber = cell.count;
 }
 

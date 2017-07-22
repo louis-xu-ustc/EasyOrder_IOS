@@ -64,6 +64,9 @@
                                                                    error:&error];
             
             _profileUserName = [json objectForKey:@"name"];
+            _userId = [[json objectForKey:@"id_str"] longLongValue];
+            
+            NSLog(@"UserInfo: %@, %lli", _profileUserName, _userId);
             
             NSString *urlString = [json objectForKey:@"profile_image_url_https"];
             NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"_normal" options:NSRegularExpressionCaseInsensitive error:&error];

@@ -45,9 +45,12 @@
 		9AF467431F15FF5E005AF8CC /* RetailerMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF467421F15FF5E005AF8CC /* RetailerMapController.m */; };
 		9AF467461F16028B005AF8CC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF467451F16028B005AF8CC /* MapKit.framework */; };
 		9AF467491F1608DB005AF8CC /* RetailerOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF467481F1608DB005AF8CC /* RetailerOrderController.m */; };
+		CDEF67ED3D86A14608F66E5D /* libPods-EasyOrder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3786500E222CA545C8F19E6D /* libPods-EasyOrder.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		031688291924004609D48C9A /* Pods-EasyOrder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyOrder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EasyOrder/Pods-EasyOrder.debug.xcconfig"; sourceTree = "<group>"; };
+		3786500E222CA545C8F19E6D /* libPods-EasyOrder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EasyOrder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		461356C11F21101A00142211 /* CustomerTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerTabBarController.h; sourceTree = "<group>"; };
 		461356C21F21101A00142211 /* CustomerTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerTabBarController.m; sourceTree = "<group>"; };
 		461356D61F2141EE00142211 /* ic_restaurant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_restaurant.png; path = drawable/ic_restaurant.png; sourceTree = "<group>"; };
@@ -68,6 +71,7 @@
 		46DD2C0A1F0D3FE900FE410E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		46E3CDCE1F21D19900EEE754 /* HistoricalOrderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoricalOrderTableView.h; sourceTree = "<group>"; };
 		46E3CDCF1F21D19900EEE754 /* HistoricalOrderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoricalOrderTableView.m; sourceTree = "<group>"; };
+		7DCE632CF2D8A4FBD093B613 /* Pods-EasyOrder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyOrder.release.xcconfig"; path = "Pods/Target Support Files/Pods-EasyOrder/Pods-EasyOrder.release.xcconfig"; sourceTree = "<group>"; };
 		9A8783991F14B46D008BB5A5 /* add_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add_circle.png; path = drawable/add_circle.png; sourceTree = "<group>"; };
 		9A87839A1F14B46D008BB5A5 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add.png; path = drawable/add.png; sourceTree = "<group>"; };
 		9A87839C1F14B46D008BB5A5 /* default_avartar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_avartar.png; path = drawable/default_avartar.png; sourceTree = "<group>"; };
@@ -110,6 +114,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF467461F16028B005AF8CC /* MapKit.framework in Frameworks */,
+				CDEF67ED3D86A14608F66E5D /* libPods-EasyOrder.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +127,7 @@
 				46DD2BF81F0D3FE900FE410E /* EasyOrder */,
 				46DD2BF71F0D3FE900FE410E /* Products */,
 				9AF467441F16028B005AF8CC /* Frameworks */,
+				7B41C038EDF82C73EB48FA27 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -200,10 +206,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		7B41C038EDF82C73EB48FA27 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				031688291924004609D48C9A /* Pods-EasyOrder.debug.xcconfig */,
+				7DCE632CF2D8A4FBD093B613 /* Pods-EasyOrder.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		9AF467441F16028B005AF8CC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				9AF467451F16028B005AF8CC /* MapKit.framework */,
+				3786500E222CA545C8F19E6D /* libPods-EasyOrder.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -215,9 +231,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 46DD2C0D1F0D3FE900FE410E /* Build configuration list for PBXNativeTarget "EasyOrder" */;
 			buildPhases = (
+				76EBF97FBB0807C27AF2F101 /* [CP] Check Pods Manifest.lock */,
 				46DD2BF21F0D3FE900FE410E /* Sources */,
 				46DD2BF31F0D3FE900FE410E /* Frameworks */,
 				46DD2BF41F0D3FE900FE410E /* Resources */,
+				B9D3EE2FF0311ECF26BED270 /* [CP] Embed Pods Frameworks */,
+				08099C5380770C1228A1267A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -298,6 +317,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		08099C5380770C1228A1267A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyOrder/Pods-EasyOrder-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		76EBF97FBB0807C27AF2F101 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B9D3EE2FF0311ECF26BED270 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyOrder/Pods-EasyOrder-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		46DD2BF21F0D3FE900FE410E /* Sources */ = {
@@ -438,6 +505,7 @@
 		};
 		46DD2C0E1F0D3FE900FE410E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 031688291924004609D48C9A /* Pods-EasyOrder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9VUC3R8D65;
@@ -450,6 +518,7 @@
 		};
 		46DD2C0F1F0D3FE900FE410E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7DCE632CF2D8A4FBD093B613 /* Pods-EasyOrder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9VUC3R8D65;

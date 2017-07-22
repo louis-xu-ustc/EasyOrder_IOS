@@ -71,7 +71,7 @@
                     accessToken = [[[param componentsSeparatedByString:@"="] objectAtIndex:1] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                     
 //                    NSLog(@"AccessToken: %@", accessToken);
-                    [controller setAccessToken:accessToken];
+//                    [controller setAccessToken:accessToken];
                     [self presentViewController:controller animated:YES completion:nil];
                     break;
                 }

@@ -12,4 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+- (IBAction)makeAPayment:(id)sender;
+
 @end
