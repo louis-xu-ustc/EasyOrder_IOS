@@ -87,30 +87,43 @@
 */
 
 - (IBAction)postDish:(id)sender {
-    [spinner startAnimating];
-    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
-    NSURL *url = [NSURL URLWithString:@"http://54.202.127.83/backend/dish/"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setHTTPMethod:@"POST"];
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:@"Human6" forKey:@"name"];
-    [params setValue:[NSNumber numberWithInt:16] forKey:@"price"];
-    [params setValue:[UIImagePNGRepresentation(_imageView.image) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength] forKey:@"photo"];
-    NSError *error;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
-    [request setHTTPBody:data];
-    NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-        [spinner stopAnimating];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.navigationController popViewControllerAnimated:YES];
-        });
+    UIViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"dishPostDialog"];
+    UITextField *dishName = [controller.view viewWithTag:1];
+    UITextField *dishPrice = [controller.view viewWithTag:2];
+    CGRect rect = CGRectMake(0, 0, 330, 350);
+    [controller setPreferredContentSize:rect.size];
+    UIAlertController *dialog = [UIAlertController alertControllerWithTitle:@"Enter Dish Information" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [dialog setValue:controller forKey:@"contentViewController"];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [spinner startAnimating];
+        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+        NSURL *url = [NSURL URLWithString:@"http://54.202.127.83/backend/dish/"];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setHTTPMethod:@"POST"];
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:dishName.text forKey:@"name"];
+        [params setValue:[NSNumber numberWithDouble:[dishPrice.text doubleValue]] forKey:@"price"];
+        [params setValue:[UIImagePNGRepresentation(_imageView.image) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength] forKey:@"photo"];
+        NSError *error;
+        NSData *data = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
+        [request setHTTPBody:data];
+        NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+            [spinner stopAnimating];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
+        }];
+        [task resume];
     }];
-    [task resume];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
+    [dialog addAction:confirm];
+    [dialog addAction:cancel];
+    [self presentViewController:dialog animated:YES completion:nil];
 }
 
 - (IBAction)takePhoto:(id)sender {
