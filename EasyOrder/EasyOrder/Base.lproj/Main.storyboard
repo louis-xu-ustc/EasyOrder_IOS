@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -210,7 +211,7 @@
                     <navigationItem key="navigationItem" title="Post" id="qw7-aO-rZa">
                         <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="olW-fr-LFh">
                             <connections>
-                                <action selector="addPost:" destination="fLk-H6-FN4" id="zAb-TA-cQR"/>
+                                <segue destination="ieG-z5-FBZ" kind="push" id="6gC-PA-VFh"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -218,6 +219,76 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6bq-q9-yjI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3004" y="-514.09295352323841"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="vdd-i6-2LD">
+            <objects>
+                <navigationController id="LBd-vF-mCP" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="wnC-DZ-zaZ"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gml-1O-rDW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="ieG-z5-FBZ" kind="relationship" relationship="rootViewController" id="qZx-oC-C5p"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LTf-yl-eat" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3727" y="-512"/>
+        </scene>
+        <!--Post Dish-->
+        <scene sceneID="ZtC-Xx-0ve">
+            <objects>
+                <viewController id="ieG-z5-FBZ" customClass="RetailerPostDishController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AbF-8t-np6"/>
+                        <viewControllerLayoutGuide type="bottom" id="jyl-gy-BRx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7ix-Z1-8fr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EbH-Ii-HZ5">
+                                <rect key="frame" x="0.0" y="64" width="375" height="492"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xY-fq-8p5">
+                                <rect key="frame" x="0.0" y="552" width="375" height="66"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.30105396642577464" green="0.79150380817973753" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                <state key="normal" title="Post">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postDish:" destination="ieG-z5-FBZ" eventType="touchUpInside" id="hQj-gB-9cL"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Post Dish" id="PJY-wG-dpF">
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="camera" id="jmO-bb-gpm">
+                                <connections>
+                                    <action selector="takePhoto:" destination="ieG-z5-FBZ" id="Pl6-Wm-CNR"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="search" id="afP-FE-7ah">
+                                <connections>
+                                    <action selector="findPhoto:" destination="ieG-z5-FBZ" id="ACe-CJ-GGW"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageView" destination="EbH-Ii-HZ5" id="mNe-a8-8pT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qty-1a-aeC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4408.8000000000002" y="-513.19340329835086"/>
         </scene>
         <!--Menu-->
         <scene sceneID="5U8-hi-G4a">
@@ -832,4 +903,7 @@
         <image name="minus.gif" width="512" height="512"/>
         <image name="shopping_cart_ios.png" width="50" height="50"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="6gC-PA-VFh"/>
+    </inferredMetricsTieBreakers>
 </document>

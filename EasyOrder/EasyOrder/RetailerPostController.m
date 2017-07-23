@@ -160,7 +160,4 @@
 }
 */
 
-- (IBAction)addPost:(id)sender {
-}
-
 @end
