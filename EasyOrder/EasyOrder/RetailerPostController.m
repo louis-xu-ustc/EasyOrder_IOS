@@ -17,6 +17,11 @@
 
 @implementation RetailerPostController
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self fetchLatestMenu];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     

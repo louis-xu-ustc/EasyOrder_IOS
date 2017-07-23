@@ -8,7 +8,9 @@
 
 #import "RetailerPostDishController.h"
 
-@interface RetailerPostDishController ()
+@interface RetailerPostDishController () {
+    UIActivityIndicatorView *spinner;
+}
 
 @end
 
@@ -17,6 +19,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    spinner.backgroundColor = UIColor.lightGrayColor;
+    spinner.alpha = 0.5;
+    spinner.center = self.view.center;
+    [self.view addSubview:spinner];
+    spinner.hidesWhenStopped = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -78,6 +87,8 @@
 */
 
 - (IBAction)postDish:(id)sender {
+    [spinner startAnimating];
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
     NSURL *url = [NSURL URLWithString:@"http://54.202.127.83/backend/dish/"];
@@ -86,13 +97,18 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setHTTPMethod:@"POST"];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:@"Human4" forKey:@"name"];
-    [params setValue:[NSNumber numberWithInt:14] forKey:@"price"];
+    [params setValue:@"Human6" forKey:@"name"];
+    [params setValue:[NSNumber numberWithInt:16] forKey:@"price"];
     [params setValue:[UIImagePNGRepresentation(_imageView.image) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength] forKey:@"photo"];
     NSError *error;
     NSData *data = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
     [request setHTTPBody:data];
     NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+        [spinner stopAnimating];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.navigationController popViewControllerAnimated:YES];
+        });
     }];
     [task resume];
 }
