@@ -8,7 +8,9 @@
 
 #import "CustomerMenuCell.h"
 
-@interface CustomerMenuCell()
+@interface CustomerMenuCell() {
+    HCSStarRatingView *ratingView;
+}
 
 @end
 
@@ -19,6 +21,14 @@
     // Initialization code
     _count = 0;
     _quantity.text = [NSString stringWithFormat:@"%d", _count];
+    
+    ratingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(10, 5, 150, 15)];
+    ratingView.maximumValue = 5;
+    ratingView.minimumValue = 0;
+    ratingView.value = 0;
+    ratingView.tintColor = UIColor.orangeColor;
+    [ratingView addTarget:self action:@selector(didChangeValueForKey:) forControlEvents:UIControlEventValueChanged];
+    [_ratingViewHolder addSubview:ratingView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

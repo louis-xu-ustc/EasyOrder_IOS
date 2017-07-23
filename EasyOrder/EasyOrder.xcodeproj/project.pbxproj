@@ -45,12 +45,12 @@
 		9AF467431F15FF5E005AF8CC /* RetailerMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF467421F15FF5E005AF8CC /* RetailerMapController.m */; };
 		9AF467461F16028B005AF8CC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF467451F16028B005AF8CC /* MapKit.framework */; };
 		9AF467491F1608DB005AF8CC /* RetailerOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF467481F1608DB005AF8CC /* RetailerOrderController.m */; };
-		CDEF67ED3D86A14608F66E5D /* libPods-EasyOrder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3786500E222CA545C8F19E6D /* libPods-EasyOrder.a */; };
+		F811B6DDFA2A584F506C67FF /* libPods-EasyOrder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 130AECEA330247553D635001 /* libPods-EasyOrder.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		031688291924004609D48C9A /* Pods-EasyOrder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyOrder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EasyOrder/Pods-EasyOrder.debug.xcconfig"; sourceTree = "<group>"; };
-		3786500E222CA545C8F19E6D /* libPods-EasyOrder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EasyOrder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		130AECEA330247553D635001 /* libPods-EasyOrder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EasyOrder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		461356C11F21101A00142211 /* CustomerTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerTabBarController.h; sourceTree = "<group>"; };
 		461356C21F21101A00142211 /* CustomerTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerTabBarController.m; sourceTree = "<group>"; };
 		461356D61F2141EE00142211 /* ic_restaurant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_restaurant.png; path = drawable/ic_restaurant.png; sourceTree = "<group>"; };
@@ -114,7 +114,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF467461F16028B005AF8CC /* MapKit.framework in Frameworks */,
-				CDEF67ED3D86A14608F66E5D /* libPods-EasyOrder.a in Frameworks */,
+				F811B6DDFA2A584F506C67FF /* libPods-EasyOrder.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				9AF467451F16028B005AF8CC /* MapKit.framework */,
-				3786500E222CA545C8F19E6D /* libPods-EasyOrder.a */,
+				130AECEA330247553D635001 /* libPods-EasyOrder.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

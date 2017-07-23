@@ -13,14 +13,17 @@ PODS:
     - Braintree/UnionPay (~> 4.0)
     - BraintreeDropIn/UIKit
   - BraintreeDropIn/UIKit (5.2.1)
+  - HCSStarRatingView (1.5)
 
 DEPENDENCIES:
   - BraintreeDropIn
+  - HCSStarRatingView (~> 1.5)
 
 SPEC CHECKSUMS:
   Braintree: 12225834d0e39ffad56888756a3c0d8bda043d53
   BraintreeDropIn: e9cecf2ec946f084476f007a7e91925016b77e91
+  HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
 
-PODFILE CHECKSUM: 1d5a7aed57c179d877a57da2e47acbc3d2d97a9d
+PODFILE CHECKSUM: a08814b4803f84e2cc0e4f9ba89922a0b8afa86a
 
 COCOAPODS: 1.2.1

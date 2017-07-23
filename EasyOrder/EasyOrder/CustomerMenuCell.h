@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <HCSStarRatingView.h>
 
 @protocol CustomerMenuCellDelegate;
 
 @interface CustomerMenuCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIView *ratingViewHolder;
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UILabel *title;
 @property (weak, nonatomic) IBOutlet UILabel *price;

@@ -7,5 +7,6 @@ target 'EasyOrder' do
 
   # Pods for EasyOrder
   pod 'BraintreeDropIn'
+  pod 'HCSStarRatingView', '~> 1.5'
 
 end
