@@ -12,6 +12,7 @@
 		461356DB1F2141EE00142211 /* ic_account_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 461356D71F2141EE00142211 /* ic_account_circle.png */; };
 		461356DC1F2141EE00142211 /* ic_payment.png in Resources */ = {isa = PBXBuildFile; fileRef = 461356D81F2141EE00142211 /* ic_payment.png */; };
 		461356DD1F2141EE00142211 /* ic_map.png in Resources */ = {isa = PBXBuildFile; fileRef = 461356D91F2141EE00142211 /* ic_map.png */; };
+		46161EE31F2709DA00757B23 /* data.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46161EE21F2709DA00757B23 /* data.plist */; };
 		46D7542D1F1E6C450040FC3F /* Dish.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D7542C1F1E6C450040FC3F /* Dish.m */; };
 		46DD2BFB1F0D3FE900FE410E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DD2BFA1F0D3FE900FE410E /* main.m */; };
 		46DD2BFE1F0D3FE900FE410E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DD2BFD1F0D3FE900FE410E /* AppDelegate.m */; };
@@ -58,6 +59,7 @@
 		461356D71F2141EE00142211 /* ic_account_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_account_circle.png; path = drawable/ic_account_circle.png; sourceTree = "<group>"; };
 		461356D81F2141EE00142211 /* ic_payment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_payment.png; path = drawable/ic_payment.png; sourceTree = "<group>"; };
 		461356D91F2141EE00142211 /* ic_map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_map.png; path = drawable/ic_map.png; sourceTree = "<group>"; };
+		46161EE21F2709DA00757B23 /* data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = data.plist; sourceTree = "<group>"; };
 		46D7542B1F1E6C450040FC3F /* Dish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dish.h; sourceTree = "<group>"; };
 		46D7542C1F1E6C450040FC3F /* Dish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dish.m; sourceTree = "<group>"; };
 		46DD2BF61F0D3FE900FE410E /* EasyOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +182,7 @@
 				46DD2BF91F0D3FE900FE410E /* Supporting Files */,
 				46E3CDCE1F21D19900EEE754 /* HistoricalOrderTableView.h */,
 				46E3CDCF1F21D19900EEE754 /* HistoricalOrderTableView.m */,
+				46161EE21F2709DA00757B23 /* data.plist */,
 			);
 			path = EasyOrder;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				9A8783AF1F14B46D008BB5A5 /* easy_order_logo.png in Resources */,
 				9A8783B11F14B46D008BB5A5 /* order_detail.png in Resources */,
 				9A8783AA1F14B46D008BB5A5 /* add.png in Resources */,
+				46161EE31F2709DA00757B23 /* data.plist in Resources */,
 				461356DD1F2141EE00142211 /* ic_map.png in Resources */,
 				9A8783A91F14B46D008BB5A5 /* add_circle.png in Resources */,
 			);

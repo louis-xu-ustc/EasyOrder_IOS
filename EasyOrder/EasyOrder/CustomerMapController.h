@@ -18,4 +18,6 @@
 @property (weak, nonatomic) IBOutlet HistoricalOrderTableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *titleView;
 
+- (IBAction)logout:(id)sender;
+
 @end

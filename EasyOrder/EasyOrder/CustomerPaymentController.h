@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+- (IBAction)logout:(id)sender;
 - (IBAction)makeAPayment:(id)sender;
 
 @end

@@ -29,7 +29,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)fetchAccessTokenAndPassToDestinationController:(id) controller {
+- (void)fetchCredentialAndPassToDestinationController {
     
     // Create an account store
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
@@ -43,44 +43,91 @@
         if (granted) {
             
             // Create an Account
-            ACAccount *twitterAccount = [[ACAccount alloc] initWithAccountType:twitterAccountType];
+            ACAccount *twitter = [[ACAccount alloc] initWithAccountType:twitterAccountType];
             NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
-            twitterAccount = [accounts lastObject];
+            twitter = [accounts lastObject];
             
             // Create an NSURL instance variable as Twitter status_update end point.
-            NSURL *twitterPostURL = [[NSURL alloc] initWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
+            NSURL *twitterGetProfileURL = [[NSURL alloc] initWithString:@"https://api.twitter.com/1.1/users/show.json"];
+            NSDictionary *params = @{@"screen_name": twitter.username};
             
             // Create a request
             SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
-                                                              requestMethod:SLRequestMethodPOST
-                                                                        URL:twitterPostURL
-                                                                 parameters:nil];
+                                                    requestMethod:SLRequestMethodGET
+                                                              URL:twitterGetProfileURL
+                                                       parameters:params];
             
             // Set the account to be used with the request
-            [request setAccount:twitterAccount];
-            
-            NSURLRequest* urlRequest = [request preparedURLRequest];
-            NSDictionary* httpHeaderFields = [urlRequest allHTTPHeaderFields];
-            
-            NSString* oAuthHeader = httpHeaderFields[@"Authorization"];
-            NSArray* oAuthHeaderParams = [oAuthHeader componentsSeparatedByString:@","];
-            
-            NSString *accessToken = nil;
-            for (NSString* param in oAuthHeaderParams) {
-                if ([param rangeOfString:@"oauth_token"].length > 0) {
-                    accessToken = [[[param componentsSeparatedByString:@"="] objectAtIndex:1] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            [request setAccount:twitter];
+            [request performRequestWithHandler:^(NSData *dataResp, NSHTTPURLResponse *urlResp, NSError *error) {
+                
+                if(error == nil){
                     
-//                    NSLog(@"AccessToken: %@", accessToken);
-//                    [controller setAccessToken:accessToken];
-                    [self presentViewController:controller animated:YES completion:nil];
-                    break;
+                    NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:dataResp options:kNilOptions error:&error];
+                    
+                    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"_normal" options:NSRegularExpressionCaseInsensitive error:&error];
+                    
+                    NSString *profileNameStr = [dict objectForKey:@"name"];
+                    NSString *userIdStr = [dict objectForKey:@"id_str"];
+                    NSString *rawImageUrlStr = [dict objectForKey:@"profile_image_url_https"];
+                    NSString *profileImageUrlStr = [regex stringByReplacingMatchesInString:rawImageUrlStr options:0 range:NSMakeRange(0, [rawImageUrlStr length]) withTemplate:@""];
+                    NSLog(@"UserInfo: %@, %@, %@", profileNameStr, userIdStr, profileImageUrlStr);
+                    
+                    // create an user on server with twitter credentials, authentication can be done in the future
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"plist"];
+                    
+                    dict = [NSDictionary dictionaryWithContentsOfFile:path];
+                    NSString *baseUrlStr = [dict objectForKey:@"EasyOrder Base URL"];
+                    NSURL *registerUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/backend/user/",baseUrlStr]];
+                    
+                    dict = @{@"twitterID":[NSNumber numberWithLongLong:[userIdStr longLongValue]], @"name":profileNameStr};
+                    NSData *json = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&error];
+                    if (json) {
+                        // process the data
+                        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:registerUrl];
+                        
+                        [request setHTTPMethod:@"POST"];
+                        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+                        [request setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+                        [request setHTTPBody: json];
+                        
+                        NSURLSession *session = [NSURLSession sharedSession];
+                        [[session dataTaskWithRequest:request
+                                    completionHandler:^(NSData *dataResp2, NSURLResponse *urlResp2, NSError *error)
+                          {
+                              // handle response in the background thread
+                              if (dataResp2.length > 0 && error == nil) {
+                                  
+                                  NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *) urlResp2;
+                                  NSDictionary *dist = [NSJSONSerialization JSONObjectWithData:dataResp2 options:0 error:&error];
+                                  NSString *message = [dist objectForKey:@"message"];
+                                  NSLog(@"Response: %@", message);
+                                  
+                                  // registration and authentication success
+                                  if(httpResp.statusCode == 200){
+                                      CustomerTabBarController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"CustomerTabBarController"];
+                                      [controller setBaseUrlStr:baseUrlStr];
+                                      [controller setProfileImageUrlStr:profileImageUrlStr];
+                                      [controller setProfileUserName:profileNameStr];
+                                      [controller setUserId:[userIdStr longLongValue]];
+                                      [self showViewController:controller sender:self];
+                                  }
+                              }
+                              else if(error != nil) {
+                                  NSLog(@"Error (%li): %@", error.code, error.domain);
+                              }
+                          }] resume];
+                    }
                 }
-            }
+                else{
+                    NSLog(@"Error (%li): %@", error.code, error.description);
+                }
+            }];
             
         } // If permission is granted
         else {
             
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"HW8yulunt Alert!"
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"EasyOrder Alert!"
                                                                            message:@"You must grant access to your Twitter account."
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
@@ -94,9 +141,7 @@
 }
 
 - (IBAction)signInAsCustomer:(id)sender {
-    
-    UIViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"CustomerTabBarController"];
-    [self fetchAccessTokenAndPassToDestinationController:controller];
+    [self fetchCredentialAndPassToDestinationController];
 }
 
 @end

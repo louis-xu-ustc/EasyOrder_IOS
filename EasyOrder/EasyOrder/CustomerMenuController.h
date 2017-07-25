@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSMutableDictionary *data;
 
+- (IBAction)logout:(id)sender;
 - (IBAction)cart:(id)sender;
 
 @end

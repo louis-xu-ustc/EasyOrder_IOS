@@ -10,6 +10,8 @@
 
 @interface CustomerTabBarController : UITabBarController
 
+@property (strong, nonatomic) NSString *baseUrlStr;
+@property (strong, nonatomic) NSString *profileImageUrlStr;
 @property (strong, nonatomic) NSString *profileUserName;
 @property (strong, nonatomic) UIImage *profileImage;
 @property (assign, nonatomic) long long userId;

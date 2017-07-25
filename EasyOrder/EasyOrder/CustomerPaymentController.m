@@ -46,10 +46,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)fetchCurrentOrders {
+
+}
+
 - (void)fetchClientToken {
     
     // TODO: Switch this URL to your own authenticated API
-    NSURL *clientTokenURL = [NSURL URLWithString:@"http://127.0.0.1:8000/backend/payment/client_token"];
+    NSURL *clientTokenURL = [NSURL URLWithString:@"http://54.202.127.83/backend/payment/client_token"];
     NSMutableURLRequest *clientTokenRequest = [NSMutableURLRequest requestWithURL:clientTokenURL];
     [clientTokenRequest setValue:@"text/plain" forHTTPHeaderField:@"Accept"];
     
@@ -104,7 +108,7 @@
     CustomerTabBarController *controller = (CustomerTabBarController *)self.tabBarController;
     
     // Update URL with your server
-    NSURL *paymentURL = [NSURL URLWithString:@"http://127.0.0.1:8000/backend/payment/checkout/"];
+    NSURL *paymentURL = [NSURL URLWithString:@"http://54.202.127.83/backend/payment/checkout/"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:paymentURL];
     request.HTTPBody = [[NSString stringWithFormat:@"payment_method_nonce=%@&user_id=%lli", paymentMethodNonce, controller.userId] dataUsingEncoding:NSUTF8StringEncoding];
     request.HTTPMethod = @"POST";
@@ -123,6 +127,10 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (IBAction)logout:(id)sender {
+    [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (IBAction)makeAPayment:(id)sender {
     if([_clientToken length] > 0){

@@ -186,4 +186,8 @@
 }
 */
 
+- (IBAction)logout:(id)sender {
+    [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
+}
+
 @end
