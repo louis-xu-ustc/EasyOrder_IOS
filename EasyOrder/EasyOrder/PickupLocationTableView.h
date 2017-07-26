@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HistoricalOrderTableView : UITableView <UITableViewDataSource, UITableViewDelegate>
+@interface PickupLocationTableView : UITableView <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSArray *array;
 

@@ -6,9 +6,9 @@
 //  Copyright © 2017 Carnegie Mellon University. All rights reserved.
 //
 
-#import "HistoricalOrderTableView.h"
+#import "PickupLocationTableView.h"
 
-@implementation HistoricalOrderTableView
+@implementation PickupLocationTableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

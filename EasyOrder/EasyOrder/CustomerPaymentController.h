@@ -10,7 +10,9 @@
 
 @interface CustomerPaymentController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *totalPrice;
 
 - (IBAction)logout:(id)sender;
 - (IBAction)makeAPayment:(id)sender;

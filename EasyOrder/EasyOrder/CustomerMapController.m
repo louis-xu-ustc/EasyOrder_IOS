@@ -13,6 +13,7 @@
     CLLocationManager *_locationManager;
     CLGeocoder *_geocoder;
     MKPointAnnotation *_retailerPin;
+    CLLocation *_currentLocation;
     NSArray *_buffer;
     NSTimer *_timer;
 }
@@ -32,7 +33,6 @@
     _geocoder = [[CLGeocoder alloc] init];
     
     // fetch the current location once the view is loaded
-    [self fetchPickupLocations];
     [self fetchCurrentLocation];
     
     // add a bottom border to the table view
@@ -85,11 +85,14 @@
                 if (data.length > 0 && error == nil) {
                     
                     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-                    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([[dict objectForKey:@"latitude"] doubleValue], [[dict objectForKey:@"longitude"] doubleValue]);
+//                    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([[dict objectForKey:@"latitude"] doubleValue], [[dict objectForKey:@"longitude"] doubleValue]);
+                    
+                    _currentLocation = [[CLLocation alloc] initWithLatitude:[[dict objectForKey:@"latitude"] doubleValue] longitude:[[dict objectForKey:@"longitude"] doubleValue]];
                     
 //                    NSLog(@"Position: (%f, %f)", coordinate.latitude, coordinate.longitude);
                     
-                    [self updateRetailerAnnotationAtCoordinate:coordinate];
+                    [self updateRetailerAnnotationAtCoordinate:_currentLocation.coordinate];
+                    [self fetchPickupLocations];
                 }
                 else if(error != nil) {
                     NSLog(@"Error (%li): %@", error.code, error.domain);
@@ -121,10 +124,9 @@
                         
                         if(error == nil && placemarks.count > 0){
                             [pickupLocation addObject:[[placemarks lastObject] name]];
-//                            NSLog(@"Location: %@", [[placemarks lastObject] name]);
                         }
                         else if(error){
-                            NSLog(@"Somthing bad happen: %@", [error localizedFailureReason]);
+                            NSLog(@"Error(%ld): %@", [error code], [error description]);
                         }
                         
                         i = i+1;
@@ -133,7 +135,7 @@
                             CLLocation *location = [[CLLocation alloc]
                                                     initWithLatitude:[[json objectForKey:@"latitude"] doubleValue]
                                                     longitude:[[json objectForKey:@"longitude"] doubleValue]];
-                            [_geocoder reverseGeocodeLocation:location completionHandler:                    weak_apply];
+                            [_geocoder reverseGeocodeLocation:location completionHandler:weak_apply];
                         }
                         else{
                             dispatch_async(dispatch_get_main_queue(), ^{

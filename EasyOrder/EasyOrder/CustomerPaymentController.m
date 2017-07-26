@@ -15,13 +15,14 @@
 @interface CustomerPaymentController ()
 {
     NSString *_clientToken;
+    NSArray *_orders;
 }
 @end
 
 @implementation CustomerPaymentController
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return _orders.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -29,7 +30,17 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [tableView dequeueReusableCellWithIdentifier:@"paymentCell" forIndexPath:indexPath];
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"paymentCell" forIndexPath:indexPath];
+    
+    NSDictionary *order = [_orders objectAtIndex:indexPath.row];
+    // tag 1: title, tag 2: amount
+    UILabel *title = [cell viewWithTag:1];
+    UILabel *amount = [cell viewWithTag:2];
+
+    title.text = [order objectForKey:@"dish"];
+    amount.text = [NSString stringWithFormat:@"%@", [order objectForKey:@"amount"]];
+    return cell;
 }
 
 - (void)viewDidLoad {
@@ -41,19 +52,57 @@
     [self fetchClientToken];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self fetchCurrentOrders];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 - (void)fetchCurrentOrders {
-
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    [[session dataTaskWithURL:[NSURL URLWithString:
+                               [NSString stringWithFormat:@"%@/backend/order/user/%lld",
+                                [(CustomerTabBarController*)self.tabBarController baseUrlStr],
+                                [(CustomerTabBarController*)self.tabBarController userId]]]
+            completionHandler:^(NSData *dataResp, NSURLResponse *urlResp, NSError *error)
+    {
+        // handle response in the background thread
+        if (dataResp.length > 0 && error == nil) {
+            
+            _orders = [NSJSONSerialization JSONObjectWithData:dataResp options:0 error:NULL];
+            
+            double sum = 0;
+            for(int i = 0; i < _orders.count; i++){
+                NSDictionary *order = [_orders objectAtIndex:i];
+                sum += ([[order objectForKey:@"amount"] intValue]*[[order objectForKey:@"price"] doubleValue]);
+            }
+            
+            if(_orders.count > 0) {
+                dispatch_async(dispatch_get_main_queue(),^{
+                    _totalPrice.text = [NSString stringWithFormat:@"$ %.2f", sum];
+                    [_tableView reloadData];
+                });
+            } //end of if
+        }
+        else if(error != nil) {
+            NSLog(@"Error (%li): %@", error.code, error.description);
+        }
+        
+    }] resume];
 }
 
 - (void)fetchClientToken {
     
     // TODO: Switch this URL to your own authenticated API
-    NSURL *clientTokenURL = [NSURL URLWithString:@"http://54.202.127.83/backend/payment/client_token"];
+    NSURL *clientTokenURL = [NSURL URLWithString:
+                             [NSString stringWithFormat:@"%@/backend/payment/client_token",
+                              [(CustomerTabBarController*)self.tabBarController baseUrlStr]]];
     NSMutableURLRequest *clientTokenRequest = [NSMutableURLRequest requestWithURL:clientTokenURL];
     [clientTokenRequest setValue:@"text/plain" forHTTPHeaderField:@"Accept"];
     

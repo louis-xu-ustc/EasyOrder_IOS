@@ -13,13 +13,15 @@
 {
     __weak IBOutlet UIImageView *_profileImageView;
     __weak IBOutlet UILabel *_profileUserName;
+    
+    NSArray *_orders;
 }
 @end
 
 @implementation CustomerProfileController
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return _orders.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -27,7 +29,15 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [tableView dequeueReusableCellWithIdentifier:@"profileCell" forIndexPath:indexPath];
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"profileCell" forIndexPath:indexPath];
+    
+    NSDictionary *json = [_orders objectAtIndex:indexPath.row];
+    UILabel *title = [cell viewWithTag:1];
+    
+    title.text = [json objectForKey:@"dish"];
+    
+    return cell;
 }
 
 - (void)viewDidLoad {
@@ -48,11 +58,33 @@
     CustomerTabBarController *controller = (CustomerTabBarController *)self.tabBarController;
     _profileUserName.text = controller.profileUserName;
     _profileImageView.image = controller.profileImage;
+    
+    [self fetchHistoricalOrders];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)fetchHistoricalOrders {
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    [[session dataTaskWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/backend/order/history/%lld",[(CustomerTabBarController*)self.tabBarController baseUrlStr], [(CustomerTabBarController*)self.tabBarController userId]]] completionHandler:^(NSData *dataResp, NSURLResponse *urlResp, NSError *error)
+      {
+          // handle response in the background thread
+          if (dataResp.length > 0 && error == nil) {
+              _orders = [NSJSONSerialization JSONObjectWithData:dataResp options:0 error:NULL];
+              if(_orders.count > 0) {
+                  dispatch_async(dispatch_get_main_queue(),^{
+                      [_tableView reloadData];
+                  });
+              } //end of if
+          }
+          else{
+              NSLog(@"Error (%li): %@", error.code, error.description);
+          }
+      }] resume];
 }
 
 /*

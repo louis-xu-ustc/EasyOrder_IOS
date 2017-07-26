@@ -110,9 +110,7 @@
                     } //end of if
                 }
                 else if(error != nil) {
-                    NSLog(@"DEBUG0!!");
                     NSLog(@"Error (%li): %@", error.code, error.description);
-                    NSLog(@"DEBUG1!!");
                 }
                 
             }] resume];
