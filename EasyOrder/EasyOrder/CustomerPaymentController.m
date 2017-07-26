@@ -83,6 +83,7 @@
                 sum += ([[order objectForKey:@"amount"] intValue]*[[order objectForKey:@"price"] doubleValue]);
             }
             
+            // update the tableView of orders
             if(_orders.count > 0) {
                 dispatch_async(dispatch_get_main_queue(),^{
                     _totalPrice.text = [NSString stringWithFormat:@"$ %.2f", sum];
@@ -106,9 +107,8 @@
     NSMutableURLRequest *clientTokenRequest = [NSMutableURLRequest requestWithURL:clientTokenURL];
     [clientTokenRequest setValue:@"text/plain" forHTTPHeaderField:@"Accept"];
     
-    [[[NSURLSession sharedSession] dataTaskWithRequest:clientTokenRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
-        // TODO: Handle errors
+    [[[NSURLSession sharedSession] dataTaskWithRequest:clientTokenRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+    {
         if(error == nil){
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
             if([httpResponse statusCode] == 200){
@@ -143,7 +143,7 @@
             
             NSString *nonce = result.paymentMethod.nonce;
             
-            NSLog(@"Debug: %@", nonce);
+            NSLog(@"Payment nonce: %@", nonce);
             // process the nonce
             [self postNonceToServer:@"fake-valid-nonce"];
         }
@@ -157,13 +157,26 @@
     CustomerTabBarController *controller = (CustomerTabBarController *)self.tabBarController;
     
     // Update URL with your server
-    NSURL *paymentURL = [NSURL URLWithString:@"http://54.202.127.83/backend/payment/checkout/"];
+    NSURL *paymentURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/backend/payment/checkout/", controller.baseUrlStr]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:paymentURL];
     request.HTTPBody = [[NSString stringWithFormat:@"payment_method_nonce=%@&user_id=%lli", paymentMethodNonce, controller.userId] dataUsingEncoding:NSUTF8StringEncoding];
     request.HTTPMethod = @"POST";
     
-    [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable dataResp, NSURLResponse * _Nullable urlResp, NSError * _Nullable error) {
         // TODO: Handle success and failure
+        
+        NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *) urlResp;
+
+        if(httpResp.statusCode == 200){
+            // payment is accepted
+            [controller stopCheckingNotification];
+            _orders = nil;
+            [_tableView reloadData];
+        }
+        else{
+            // TODO: handle payment failure here
+        }
+        
     }] resume];
 }
 

@@ -232,6 +232,7 @@
                     }
                 }] resume];
             }
+            [controller startCheckingNotification];
         }
         
     }];

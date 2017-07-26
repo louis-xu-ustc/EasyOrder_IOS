@@ -20,7 +20,7 @@
     [super awakeFromNib];
     // Initialization code
     _count = 0;
-    _quantity.text = [NSString stringWithFormat:@"%d", _count];
+    _quantity.text = [NSString stringWithFormat:@"%ld", _count];
     
     ratingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(10, 5, 150, 15)];
     ratingView.maximumValue = 5;
@@ -39,14 +39,14 @@
 
 - (IBAction)add:(id)sender {
     _count++;
-    _quantity.text = [NSString stringWithFormat:@"%d", _count];
+    _quantity.text = [NSString stringWithFormat:@"%ld", _count];
     [_delegate onMenuItemChange:self];
 }
 
 - (IBAction)remove:(id)sender {
     if (_count > 0) {
         _count--;
-        _quantity.text = [NSString stringWithFormat:@"%d", _count];
+        _quantity.text = [NSString stringWithFormat:@"%ld", _count];
         [_delegate onMenuItemChange:self];
     }
 }

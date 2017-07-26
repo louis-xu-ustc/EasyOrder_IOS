@@ -58,7 +58,9 @@
     CustomerTabBarController *controller = (CustomerTabBarController *)self.tabBarController;
     _profileUserName.text = controller.profileUserName;
     _profileImageView.image = controller.profileImage;
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
     [self fetchHistoricalOrders];
 }
 

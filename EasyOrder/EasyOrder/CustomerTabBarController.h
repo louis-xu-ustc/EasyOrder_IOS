@@ -15,5 +15,9 @@
 @property (strong, nonatomic) NSString *profileUserName;
 @property (strong, nonatomic) UIImage *profileImage;
 @property (assign, nonatomic) long long userId;
+@property (assign, nonatomic) long lastNotificationTime;
+
+- (void)startCheckingNotification;
+- (void)stopCheckingNotification;
 
 @end

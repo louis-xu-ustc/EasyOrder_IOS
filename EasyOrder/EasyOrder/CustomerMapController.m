@@ -67,6 +67,7 @@
                                             selector:@selector(fetchCurrentLocation)
                                             userInfo:nil
                                              repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)stopBackgroundTimer {

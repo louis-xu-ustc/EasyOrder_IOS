@@ -104,8 +104,9 @@
                                   NSLog(@"Response: %@", message);
                                   
                                   // registration and authentication success
-                                  if(httpResp.statusCode == 200){
+                                  if(httpResp.statusCode == 200 || httpResp.statusCode == 201){
                                       CustomerTabBarController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"CustomerTabBarController"];
+                                      
                                       [controller setBaseUrlStr:baseUrlStr];
                                       [controller setProfileImageUrlStr:profileImageUrlStr];
                                       [controller setProfileUserName:profileNameStr];
