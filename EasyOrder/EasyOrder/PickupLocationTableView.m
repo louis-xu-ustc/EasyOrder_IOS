@@ -15,18 +15,31 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _array.count;
+    return _arrayLocation.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"pickupLocationCell" forIndexPath:indexPath];
     
     // Configure the cell...
-    NSString *name = [_array objectAtIndex:indexPath.row];
-    UILabel *nameLabel = [cell viewWithTag:0]; // TAG 0 is the text label for location name
-//    UILabel *TimeLabel = [cell viewWithTag:1]; // TAG 1 is the time label for ETA
+    id location = [_arrayLocation objectAtIndex:indexPath.row];
+    UILabel *nameLabel = [cell viewWithTag:1]; // TAG 0 is the text label for location name
+    UILabel *etaLabel = [cell viewWithTag:2]; // TAG 1 is the time label for ETA
     
-    nameLabel.text = name;
+    nameLabel.text = [location name];
+    
+    NSNumber *constNegativeOne = [NSNumber numberWithDouble:-1];
+    if(_arrayLocation.count == _arrayETA.count){
+        NSNumber *number = [_arrayETA objectAtIndex:indexPath.row];
+        
+        if([number isEqualToValue:constNegativeOne]){
+            etaLabel.text = @"NA";
+        }
+        else{
+            double min = [number doubleValue]/60;
+            etaLabel.text = [NSString stringWithFormat:@"%.1f min", min];
+        }
+    }
     return cell;
 }
 

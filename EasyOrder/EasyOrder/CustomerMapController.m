@@ -16,6 +16,7 @@
     CLLocation *_currentLocation;
     NSArray *_buffer;
     NSTimer *_timer;
+    bool _pickupLocationLoaded;
 }
 @end
 
@@ -33,7 +34,9 @@
     _geocoder = [[CLGeocoder alloc] init];
     
     // fetch the current location once the view is loaded
+    _pickupLocationLoaded = NO;
     [self fetchCurrentLocation];
+    [self fetchPickupLocations];
     
     // add a bottom border to the table view
     CALayer *bottomBorder = [CALayer layer];
@@ -59,8 +62,7 @@
 
 // Periodic update
 - (void)startBackgroundTimer {
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:15.0
+    _timer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                               target:self
                                             selector:@selector(fetchCurrentLocation)
                                             userInfo:nil
@@ -85,21 +87,95 @@
                 if (data.length > 0 && error == nil) {
                     
                     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-//                    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([[dict objectForKey:@"latitude"] doubleValue], [[dict objectForKey:@"longitude"] doubleValue]);
-                    
                     _currentLocation = [[CLLocation alloc] initWithLatitude:[[dict objectForKey:@"latitude"] doubleValue] longitude:[[dict objectForKey:@"longitude"] doubleValue]];
                     
-//                    NSLog(@"Position: (%f, %f)", coordinate.latitude, coordinate.longitude);
-                    
                     [self updateRetailerAnnotationAtCoordinate:_currentLocation.coordinate];
-                    [self fetchPickupLocations];
+                    
+                    if(_pickupLocationLoaded){
+                        [self updatePickupLocationsETA];
+                    }
                 }
                 else if(error != nil) {
-                    NSLog(@"Error (%li): %@", error.code, error.domain);
+                    NSLog(@"Error (%li): %@", error.code, error.description);
                 }
                 
             }] resume];
     
+}
+
+- (void)updatePickupLocationsETA {
+    
+    __block NSInteger i = 0;
+    __block NSInteger bound = _tableView.arrayLocation.count;
+    __block MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:_currentLocation.coordinate addressDictionary:nil];
+    __block MKMapItem *source = [[MKMapItem alloc] initWithPlacemark:placemark];
+    __block NSMutableArray *pickupETAs = [NSMutableArray arrayWithCapacity:10];
+
+    __block __weak void (^weak_apply)(MKDirectionsResponse *response, NSError *error);
+    void (^apply)(MKDirectionsResponse *response, NSError *error);
+    
+    weak_apply = apply = ^(MKDirectionsResponse *response, NSError *error){
+        if (!error && [response routes] > 0) {
+            MKRoute *route = [[response routes] objectAtIndex:0];
+            //route.distance  = The distance
+            //route.expectedTravelTime = The ETA
+            [pickupETAs addObject:[NSNumber numberWithDouble:route.expectedTravelTime]];
+        }
+        else{
+            [pickupETAs addObject:[NSNumber numberWithDouble:-1]];
+        }
+
+        i = i + 1;
+        if(i < bound){
+            // TODO
+            placemark = [_tableView.arrayLocation objectAtIndex:i];
+            MKMapItem *destination = [[MKMapItem alloc] initWithPlacemark:placemark];
+            MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
+            
+            [request setSource:source];
+            [request setDestination:destination];
+            [request setTransportType:MKDirectionsTransportTypeAutomobile];
+            [request setRequestsAlternateRoutes:NO];
+            MKDirections *directions = [[MKDirections alloc] initWithRequest:request];
+            [directions calculateDirectionsWithCompletionHandler:weak_apply];
+        }
+        else{
+            NSLog(@"Complete ETA updates");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_tableView setArrayETA:[[NSArray alloc]initWithArray:pickupETAs]];
+                [_tableView reloadData];
+            });
+        }
+    };
+    
+    placemark = [_tableView.arrayLocation objectAtIndex:i];
+    MKMapItem *destination = [[MKMapItem alloc] initWithPlacemark:placemark];
+    MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
+    
+    [request setSource:source];
+    [request setDestination:destination];
+    [request setTransportType:MKDirectionsTransportTypeAutomobile];
+    [request setRequestsAlternateRoutes:NO];
+    MKDirections *directions = [[MKDirections alloc] initWithRequest:request];
+    [directions calculateDirectionsWithCompletionHandler:apply];
+    
+//    {
+//        if (!error && [response routes] > 0) {
+//            MKRoute *route = [[response routes] objectAtIndex:0];
+//            //route.distance  = The distance
+//            //route.expectedTravelTime = The ETA
+//            [pickupLocation addObject:@{@"name":[[placemarks lastObject] name],@"eta":[NSNumber numberWithDouble:route.expectedTravelTime]}];
+//        }
+//
+//        j = j + 1;
+//        if(j >= bound){
+//            NSLog(@"Complete geocoding");
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [_tableView setArray:[[NSArray alloc]initWithArray:pickupLocation]];
+//                [_tableView reloadData];
+//            });
+//        }
+//    }];
 }
 
 - (void)fetchPickupLocations {
@@ -116,14 +192,14 @@
                     __block NSMutableArray *pickupLocation = [NSMutableArray arrayWithCapacity:10];
                     __block NSInteger i = 0;
                     __block NSDictionary *json;
-                    
+
                     __block __weak void (^weak_apply)(NSArray* placemarks, NSError* error);
                     void (^apply)(NSArray* placemarks, NSError* error);
                     
                     weak_apply = apply = ^(NSArray* placemarks, NSError* error){
                         
                         if(error == nil && placemarks.count > 0){
-                            [pickupLocation addObject:[[placemarks lastObject] name]];
+                            [pickupLocation addObject:[placemarks lastObject]];
                         }
                         else if(error){
                             NSLog(@"Error(%ld): %@", [error code], [error description]);
@@ -139,10 +215,11 @@
                         }
                         else{
                             dispatch_async(dispatch_get_main_queue(), ^{
-                                [_tableView setArray:[[NSArray alloc]initWithArray:pickupLocation]];
+                                [_tableView setArrayLocation:[[NSArray alloc]initWithArray:pickupLocation]];
+                                _pickupLocationLoaded = YES;
                                 [_tableView reloadData];
                             });
-//                            NSLog(@"Complete geocoding");
+                            NSLog(@"Complete geocoding");
                         }
                     };
                     

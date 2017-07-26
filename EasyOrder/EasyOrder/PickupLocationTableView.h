@@ -10,6 +10,7 @@
 
 @interface PickupLocationTableView : UITableView <UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) NSArray *array;
+@property (strong, nonatomic) NSArray *arrayLocation;
+@property (strong, nonatomic) NSArray *arrayETA;
 
 @end
