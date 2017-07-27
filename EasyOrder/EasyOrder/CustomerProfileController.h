@@ -13,4 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIView *profileView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+- (IBAction)logout:(id)sender;
+
 @end

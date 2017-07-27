@@ -11,6 +11,7 @@
 @interface LoginViewController : UIViewController
 
 - (IBAction)signInAsCustomer:(id)sender;
+- (IBAction)signInAsRetailer:(id)sender;
 
 @end
 

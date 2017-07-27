@@ -205,11 +205,6 @@
     }
 }
 
-- (IBAction)logout:(id)sender {
-    // dismiss current tabBarView controller and back to the login view
-    [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (IBAction)cart:(id)sender {
     
     __block NSMutableDictionary *rowIndexOrderMap = [[NSMutableDictionary alloc] init];

@@ -190,10 +190,6 @@
 }
 */
 
-- (IBAction)logout:(id)sender {
-    [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (IBAction)makeAPayment:(id)sender {
     if([_clientToken length] > 0){
         [self showDropIn:_clientToken];

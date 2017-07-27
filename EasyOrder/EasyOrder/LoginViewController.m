@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 
 #import "CustomerTabBarController.h"
+#import "RetailerTabBarController.h"
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 
@@ -29,7 +30,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)fetchCredentialAndPassToDestinationController {
+- (void)fetchCredentialAndPassToDestinationController:(NSString *)identifier {
     
     // Create an account store
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
@@ -105,12 +106,18 @@
                                   
                                   // registration and authentication success
                                   if(httpResp.statusCode == 200 || httpResp.statusCode == 201){
-                                      CustomerTabBarController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"CustomerTabBarController"];
-                                      
-                                      [controller setBaseUrlStr:baseUrlStr];
-                                      [controller setProfileImageUrlStr:profileImageUrlStr];
-                                      [controller setProfileUserName:profileNameStr];
-                                      [controller setUserId:[userIdStr longLongValue]];
+                                      UITabBarController *controller = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
+                                      if ([identifier isEqualToString:@"CustomerTabBarController"]) {
+                                          [(CustomerTabBarController *)controller setBaseUrlStr:baseUrlStr];
+                                          [(CustomerTabBarController *)controller setProfileImageUrlStr:profileImageUrlStr];
+                                          [(CustomerTabBarController *)controller setProfileUserName:profileNameStr];
+                                          [(CustomerTabBarController *)controller setUserId:[userIdStr longLongValue]];
+                                      } else {
+                                          [(RetailerTabBarController *)controller setBaseUrlStr:baseUrlStr];
+                                          [(RetailerTabBarController *)controller setProfileImageUrlStr:profileImageUrlStr];
+                                          [(RetailerTabBarController *)controller setProfileUserName:profileNameStr];
+                                          [(RetailerTabBarController *)controller setUserId:[userIdStr longLongValue]];
+                                      }
                                       [self showViewController:controller sender:self];
                                   }
                               }
@@ -142,7 +149,11 @@
 }
 
 - (IBAction)signInAsCustomer:(id)sender {
-    [self fetchCredentialAndPassToDestinationController];
+    [self fetchCredentialAndPassToDestinationController:@"CustomerTabBarController"];
+}
+
+- (IBAction)signInAsRetailer:(id)sender {
+    [self fetchCredentialAndPassToDestinationController:@"RetailerTabBarController"];
 }
 
 @end
