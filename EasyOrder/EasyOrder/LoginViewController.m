@@ -114,14 +114,14 @@
                                       [self showViewController:controller sender:self];
                                   }
                               }
-                              else if(error != nil) {
-                                  NSLog(@"Error (%li): %@", error.code, error.domain);
+                              else if(error) {
+                                  NSLog(@"Error(%li): %@", error.code, error.description);
                               }
                           }] resume];
                     }
                 }
                 else{
-                    NSLog(@"Error (%li): %@", error.code, error.description);
+                    NSLog(@"Error(%li): %@", error.code, error.description);
                 }
             }];
             

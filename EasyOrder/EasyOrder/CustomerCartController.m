@@ -8,10 +8,10 @@
 
 #import "CustomerCartController.h"
 
-@interface CustomerCartController () {
+@interface CustomerCartController ()
+{
     NSMutableDictionary *data;
 }
-
 @end
 
 @implementation CustomerCartController
@@ -38,12 +38,10 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
     return data.count;
 }
 
@@ -55,9 +53,9 @@
     UILabel *quantity = [cell viewWithTag:2];
     UILabel *totalPrice = [cell viewWithTag:3];
     
-    Dish *dish = [data objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]];
+    Dish *dish = [data objectForKey:[NSString stringWithFormat:@"%ld", indexPath.row]];
     title.text = dish.dishName;
-    quantity.text = [NSString stringWithFormat:@"%d", dish.dishNumber];
+    quantity.text = [NSString stringWithFormat:@"%ld", dish.dishNumber];
     totalPrice.text = [NSString stringWithFormat:@"$ %.02f", dish.dishNumber * dish.dishPrice];
     
     return cell;

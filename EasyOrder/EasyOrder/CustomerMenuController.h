@@ -13,7 +13,7 @@
 
 @interface CustomerMenuController : UITableViewController <CustomerMenuCellDelegate>
 
-@property (nonatomic, strong) NSMutableDictionary *data;
+@property (nonatomic, strong) NSMutableDictionary *rowIndexDishMap;
 
 - (IBAction)logout:(id)sender;
 - (IBAction)cart:(id)sender;

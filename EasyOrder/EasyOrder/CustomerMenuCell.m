@@ -9,7 +9,7 @@
 #import "CustomerMenuCell.h"
 
 @interface CustomerMenuCell() {
-    HCSStarRatingView *ratingView;
+    HCSStarRatingView *_ratingView;
 }
 
 @end
@@ -17,18 +17,20 @@
 @implementation CustomerMenuCell
 
 - (void)awakeFromNib {
+    
     [super awakeFromNib];
     // Initialization code
     _count = 0;
     _quantity.text = [NSString stringWithFormat:@"%ld", _count];
     
-    ratingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(10, 5, 150, 15)];
-    ratingView.maximumValue = 5;
-    ratingView.minimumValue = 0;
-    ratingView.value = 0;
-    ratingView.tintColor = UIColor.orangeColor;
-    [ratingView addTarget:self action:@selector(didChangeValueForKey:) forControlEvents:UIControlEventValueChanged];
-    [_ratingViewHolder addSubview:ratingView];
+    _ratingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(0, 0, 150, 15)];
+    _ratingView.maximumValue = 5;
+    _ratingView.minimumValue = 0;
+    _ratingView.value = 0;
+    _ratingView.allowsHalfStars = YES;
+    _ratingView.tintColor = UIColor.orangeColor;
+    [_ratingView addTarget:self action:@selector(didChangeValue:) forControlEvents:UIControlEventValueChanged];
+    [_ratingViewHolder addSubview:_ratingView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -50,4 +52,15 @@
         [_delegate onMenuItemChange:self];
     }
 }
+
+- (IBAction)didChangeValue:(HCSStarRatingView *)sender {
+    NSLog(@"Changed rating to %.1f", sender.value);
+    [_delegate onRatingChangeAt:self.position withRate:sender.value];
+}
+
+- (void)setRating:(double) rate{
+    _ratingView.value = rate;
+    [_ratingView setNeedsLayout];
+}
+
 @end
