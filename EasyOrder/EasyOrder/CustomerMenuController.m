@@ -73,6 +73,13 @@
         {
             if (dataResp) {
                 UIImage *image = [UIImage imageWithData:dataResp];
+                
+                CGSize size = image.size;
+                NSInteger side = MIN(size.width, size.height);
+                CGRect rect = CGRectMake(0, 0, side, side);
+                CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], rect);
+                image = [UIImage imageWithCGImage:imageRef];
+                CGImageRelease(imageRef);
                 if (image) {
                     // on can only update a tableViewCell in the main UI thread
                     dispatch_async(dispatch_get_main_queue(), ^{
