@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -35,7 +35,7 @@
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
-                                    <segue destination="99L-Bn-1tu" kind="show" identifier="retailerSegue" id="F1z-4p-mD8"/>
+                                    <action selector="signInAsRetailer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rwi-5B-gER"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="easy_order_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="cpm-8V-Sm1">
@@ -932,7 +932,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="JPt-BJ-uJc">
             <objects>
-                <tabBarController id="99L-Bn-1tu" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="RetailerTabBarController" id="99L-Bn-1tu" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="FRG-qG-1i9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
