@@ -18,6 +18,4 @@
 @property (weak, nonatomic) IBOutlet PickupLocationTableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *titleView;
 
-- (IBAction)logout:(id)sender;
-
 @end

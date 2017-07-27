@@ -65,7 +65,7 @@
         <!--Profile-->
         <scene sceneID="J7c-WQ-7zI">
             <objects>
-                <viewController id="ZdZ-Pp-Qdu" sceneMemberID="viewController">
+                <viewController id="ZdZ-Pp-Qdu" customClass="RetailerProfileController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jBE-3t-2Oh"/>
                         <viewControllerLayoutGuide type="bottom" id="G5N-Z7-Xl4"/>
@@ -92,10 +92,23 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r6U-Qx-01q">
+                                <rect key="frame" x="265" y="28" width="94" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Log Out"/>
+                                <connections>
+                                    <action selector="logout:" destination="ZdZ-Pp-Qdu" eventType="touchUpInside" id="EQB-e5-G5u"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" id="mle-vq-ZcS"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="ic_account_circle.png" id="mle-vq-ZcS"/>
+                    <connections>
+                        <outlet property="profileImage" destination="UzB-Wd-GKE" id="ga6-hu-ruv"/>
+                        <outlet property="profileName" destination="q1y-VS-iy4" id="UYb-Gk-Xfp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kH0-Gt-y0t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -105,7 +118,7 @@
         <scene sceneID="LUA-4s-zqW">
             <objects>
                 <navigationController id="cld-p2-1Nk" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Orders" id="iSR-za-bOm"/>
+                    <tabBarItem key="tabBarItem" title="Orders" image="ic_payment.png" id="iSR-za-bOm"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="nO6-cV-MgL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -422,17 +435,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Menu" id="Du4-My-lQZ">
-                        <barButtonItem key="leftBarButtonItem" title="Log Out" style="plain" id="Yl3-Bo-GFh">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="qGQ-px-2Ou">
-                                <rect key="frame" x="16" y="7" width="83" height="30"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="titleEdgeInsets" minX="-30" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Log Out"/>
-                                <connections>
-                                    <action selector="logout:" destination="e7U-KH-Ar7" eventType="touchUpInside" id="wSQ-ni-GFq"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="shopping_cart_ios.png" style="plain" id="OV5-ho-OoZ">
                             <inset key="imageInsets" minX="15" minY="10" maxX="0.0" maxY="10"/>
                             <connections>
@@ -585,6 +587,22 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9fx-YU-6tu">
+                                        <rect key="frame" x="8" y="8" width="359" height="39"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MUL-ET-Tnp">
+                                                <rect key="frame" x="235" y="0.0" width="116" height="39"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <state key="normal" title="Log Out"/>
+                                                <connections>
+                                                    <action selector="logout:" destination="uWf-rC-pnt" eventType="touchUpInside" id="0L5-KN-xme"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -692,19 +710,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Order Detail" id="DTU-fA-e1m">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="odA-xo-D47">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7SP-dy-nYs">
-                                <rect key="frame" x="16" y="7" width="83" height="30"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="titleEdgeInsets" minX="-30" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Log Out"/>
-                                <connections>
-                                    <action selector="logout:" destination="OON-Tl-pwa" eventType="touchUpInside" id="XWa-y6-IXl"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Order Detail" id="DTU-fA-e1m"/>
                     <connections>
                         <outlet property="tableView" destination="Xwq-p5-13q" id="6WE-dH-0Jy"/>
                         <outlet property="totalPrice" destination="qc5-4t-QCu" id="BjQ-ku-rEU"/>
@@ -802,19 +808,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Map" id="KZ2-qJ-CMN">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="PgB-NH-39T">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wKO-Eg-9W3">
-                                <rect key="frame" x="16" y="7" width="83" height="30"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="titleEdgeInsets" minX="-30" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Log Out"/>
-                                <connections>
-                                    <action selector="logout:" destination="dXp-lS-e90" eventType="touchUpInside" id="i10-zM-gKP"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Map" id="KZ2-qJ-CMN"/>
                     <connections>
                         <outlet property="mapView" destination="hVy-Xe-nd3" id="qCy-X1-3t2"/>
                         <outlet property="tableView" destination="aY6-3Z-1fg" id="MpE-zL-f9a"/>
@@ -846,7 +840,7 @@
         <scene sceneID="2jD-Ct-dEW">
             <objects>
                 <navigationController id="xrZ-EP-3Eh" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Map" id="wED-Zm-05h"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="ic_map.png" id="wED-Zm-05h"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Bwm-px-URZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -896,7 +890,7 @@
         <scene sceneID="4Tw-zG-6om">
             <objects>
                 <navigationController id="J4r-FQ-vJG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Post" id="yEs-B4-fkq"/>
+                    <tabBarItem key="tabBarItem" title="Post" image="ic_restaurant.png" id="yEs-B4-fkq"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vb7-wH-y5z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -929,10 +923,10 @@
             </objects>
             <point key="canvasLocation" x="1097" y="1183"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Retailer Tab Bar Controller-->
         <scene sceneID="JPt-BJ-uJc">
             <objects>
-                <tabBarController storyboardIdentifier="RetailerTabBarController" id="99L-Bn-1tu" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="RetailerTabBarController" id="99L-Bn-1tu" customClass="RetailerTabBarController" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="FRG-qG-1i9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

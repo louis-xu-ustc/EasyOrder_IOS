@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 
 #import "CustomerTabBarController.h"
+#import "RetailerTabBarController.h"
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 
@@ -111,6 +112,11 @@
                                           [(CustomerTabBarController *)controller setProfileImageUrlStr:profileImageUrlStr];
                                           [(CustomerTabBarController *)controller setProfileUserName:profileNameStr];
                                           [(CustomerTabBarController *)controller setUserId:[userIdStr longLongValue]];
+                                      } else {
+                                          [(RetailerTabBarController *)controller setBaseUrlStr:baseUrlStr];
+                                          [(RetailerTabBarController *)controller setProfileImageUrlStr:profileImageUrlStr];
+                                          [(RetailerTabBarController *)controller setProfileUserName:profileNameStr];
+                                          [(RetailerTabBarController *)controller setUserId:[userIdStr longLongValue]];
                                       }
                                       [self showViewController:controller sender:self];
                                   }
