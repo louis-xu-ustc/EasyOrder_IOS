@@ -77,6 +77,12 @@
         NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if (data) {
                 UIImage *image = [UIImage imageWithData:data];
+                CGSize size = image.size;
+                NSInteger side = MIN(size.width, size.height);
+                CGRect rect = CGRectMake(0, 0, side, side);
+                CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], rect);
+                image = [UIImage imageWithCGImage:imageRef];
+                CGImageRelease(imageRef);
                 if (image) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [_imageCache setObject:image forKey:url];
