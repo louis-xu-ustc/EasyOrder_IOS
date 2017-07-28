@@ -10,12 +10,15 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@interface RetailerMapController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate>
+@interface RetailerMapController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geocoder;
 @property (nonatomic, strong) CLLocation *location;
+@property (nonatomic, strong) NSMutableArray *candidates;
+@property (nonatomic, strong) CLPlacemark *selectedLoc;
 
 @end
