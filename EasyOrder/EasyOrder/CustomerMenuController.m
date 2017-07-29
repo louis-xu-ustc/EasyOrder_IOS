@@ -66,6 +66,9 @@
     cell.price.text = [NSString stringWithFormat:@"$ %@", [dish objectForKey:@"price"]];
     [cell setRating:[[dish objectForKey:@"rate"] doubleValue]];
     
+    Dish *item = [_rowIndexDishMap objectForKey:[NSString stringWithFormat:@"%li", indexPath.row]];
+    cell.quantity.text = [NSString stringWithFormat:@"%li", item.dishNumber];
+    
     // before the imageView is set, it would be nil
     if (cell.imageView.image == nil) {
     
@@ -264,13 +267,15 @@
                         NSDictionary *dist = [NSJSONSerialization JSONObjectWithData:dataResp options:0 error:&error];
                         NSString *message = [dist objectForKey:@"message"];
                         NSLog(@"Response: %@", message);
+                        
+                        [controller startCheckingNotification];
                     }
                     else if(error != nil) {
                         NSLog(@"Error(%li): %@", error.code, error.description);
                     }
                 }] resume];
             }
-            [controller startCheckingNotification];
+            [self resetMenuList];
         }
     }];
     
@@ -278,6 +283,19 @@
     [dialog addAction:confirm];
     [dialog addAction:cancel];
     [self presentViewController:dialog animated:YES completion:nil];
+}
+
+- (void)resetMenuList {
+    int i = 0;
+    for (id key in _rowIndexDishMap) {
+        Dish *dish = [_rowIndexDishMap objectForKey:key];
+        if (dish.dishNumber != 0) {
+            [dish setDishNumber:0];
+            i++;
+        }
+    }
+    
+    [self.tableView reloadData];
 }
 
 @end

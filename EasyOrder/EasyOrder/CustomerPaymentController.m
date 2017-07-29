@@ -171,7 +171,10 @@
             // payment is accepted
             [controller stopCheckingNotification];
             _orders = nil;
-            [_tableView reloadData];
+            dispatch_async(dispatch_get_main_queue(),^{
+                _totalPrice.text = [NSString stringWithFormat:@"$ %.2f", 0.0];
+                [_tableView reloadData];
+            });
         }
         else{
             // TODO: handle payment failure here
