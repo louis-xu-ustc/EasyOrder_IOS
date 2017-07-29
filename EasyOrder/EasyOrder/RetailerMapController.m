@@ -141,14 +141,67 @@
         [request setHTTPBody:data];
         NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self displayMap];
-                [self fetchPickupLocations];
             });
         }];
         [task resume];
+        [self displayMap];
+        [self fetchPickupLocations];
+        [self registerGeofencing:_selectedLoc];
+        if (_location == nil) {
+            _location = [_locationManager location];
+        }
+        CLLocationCoordinate2D center = CLLocationCoordinate2DMake(_selectedLoc.location.coordinate.latitude, _selectedLoc.location.coordinate.longitude);
+        CLCircularRegion *bridge = [[CLCircularRegion alloc] initWithCenter:center radius:100.0 identifier:@"bridgeFirst"];
+        if ([bridge containsCoordinate:self.location.coordinate]) {
+            [self sendGeofencingInfo:@"Your order is coming soon. Please prepare to pick it up."];
+        }
     }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:action];
+    [alert addAction:cancel];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)registerGeofencing:(CLPlacemark *)loc {
+    CLLocationCoordinate2D center = CLLocationCoordinate2DMake(loc.location.coordinate.latitude, loc.location.coordinate.longitude);
+    CLRegion *bridge = [[CLCircularRegion alloc] initWithCenter:center radius:100.0 identifier:@"bridge"];
+    [self.locationManager startMonitoringForRegion:bridge];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
+    [self sendGeofencingInfo:@"Your order is coming soon. Please prepare to pick it up."];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
+    [self sendGeofencingInfo:@"Your order is leaving your region. Please wait for more time."];
+}
+
+- (void)sendGeofencingInfo:(NSString *)message {
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+    NSURL *url = [NSURL URLWithString:@"http://54.202.127.83/backend/notification/"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setHTTPMethod:@"PUT"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:message forKey:@"content"];
+    NSError *error;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
+    [request setHTTPBody:data];
+    NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+        });
+    }];
+    [task resume];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region {
+    
+}
+
+- (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error {
+    
 }
 
 - (void)displayMap {
@@ -181,7 +234,6 @@
         if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
             [self.locationManager requestAlwaysAuthorization];
         }
-        [_locationManager startUpdatingLocation];
         self.location = [[CLLocation alloc] init];
         if (!_geocoder) {
             _geocoder = [[CLGeocoder alloc] init];
@@ -194,6 +246,7 @@
         _tableView.delegate = _tableView;
         _pickupLocationLoaded = NO;
         [self fetchPickupLocations];
+        [_locationManager startUpdatingLocation];
     }
 }
 
