@@ -14,7 +14,7 @@
     CLGeocoder *_geocoder;
     MKPointAnnotation *_retailerPin;
     CLLocation *_currentLocation;
-    NSArray *_buffer;
+    NSMutableArray *_buffer;
     NSTimer *_timer;
     bool _pickupLocationLoaded;
 }
@@ -37,6 +37,7 @@
     _pickupLocationLoaded = NO;
     [self fetchCurrentLocation];
     [self fetchPickupLocations];
+    _buffer = [[NSMutableArray alloc] init];
     
     // add a bottom border to the table view
     CALayer *bottomBorder = [CALayer layer];
@@ -106,7 +107,7 @@
 
 - (void)updatePickupLocationsETA {
     __block NSInteger bound = _tableView.arrayLocation.count;
-    __block NSInteger i = bound - 1;
+    __block NSInteger i = 0;
     __block MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:_currentLocation.coordinate addressDictionary:nil];
     __block MKMapItem *source = [[MKMapItem alloc] initWithPlacemark:placemark];
     __block NSMutableArray *pickupETAs = [NSMutableArray arrayWithCapacity:10];
@@ -125,8 +126,8 @@
             [pickupETAs addObject:[NSNumber numberWithDouble:-1]];
         }
 
-        i--;
-        if((bound - i) <= 3 && i >= 0){
+        i++;
+        if(i < bound){
             // TODO
             placemark = [_tableView.arrayLocation objectAtIndex:i];
             MKMapItem *destination = [[MKMapItem alloc] initWithPlacemark:placemark];
@@ -186,11 +187,14 @@
                 
                 // handle response in the background thread
                 if (data.length > 0 && error == nil) {
-                    _buffer = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-                    
+                    [_buffer removeAllObjects];
+                    NSArray *temp = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+                    for (int j = temp.count - 1; (j >= 0 && j >= temp.count - 3); j--) {
+                        [_buffer addObject:[temp objectAtIndex:j]];
+                    }
                     NSInteger max = _buffer.count;
                     __block NSMutableArray *pickupLocation = [NSMutableArray arrayWithCapacity:10];
-                    __block NSInteger i = max - 1;
+                    __block NSInteger i = 0;
                     __block NSDictionary *json;
 
                     __block __weak void (^weak_apply)(NSArray* placemarks, NSError* error);
@@ -205,8 +209,8 @@
                             NSLog(@"Error(%ld): %@", [error code], [error description]);
                         }
                         
-                        i--;
-                        if((max - i) <= 3 && i >= 0){
+                        i++;
+                        if(i < max){
                             json = [_buffer objectAtIndex:i];
                             CLLocation *location = [[CLLocation alloc]
                                                     initWithLatitude:[[json objectForKey:@"latitude"] doubleValue]
