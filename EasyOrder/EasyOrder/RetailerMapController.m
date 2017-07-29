@@ -8,7 +8,10 @@
 
 #import "RetailerMapController.h"
 
-@interface RetailerMapController ()
+@interface RetailerMapController () {
+    NSArray *_buffer;
+    bool _pickupLocationLoaded;
+}
 
 @end
 
@@ -48,6 +51,59 @@
     return label;
 }
 
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    MKPointAnnotation *point = (MKPointAnnotation *)annotation;
+    NSString *type = point.accessibilityLabel;
+    if ([type isEqualToString:@"user"]) {
+        MKPinAnnotationView *view = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:NSLocaleIdentifier];
+        view.pinColor = MKPinAnnotationColorPurple;
+        view.animatesDrop = YES;
+        view.canShowCallout = YES;
+        return view;
+    } else {
+        MKPinAnnotationView *view = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:NSLocaleIdentifier];
+        view.pinColor = MKPinAnnotationColorRed;
+        view.animatesDrop = YES;
+        view.canShowCallout = YES;
+        return view;
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    self.location = [locations lastObject];
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+    NSURL *url = [NSURL URLWithString:@"http://54.202.127.83/backend/current_location/"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setHTTPMethod:@"PUT"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:[NSNumber numberWithDouble:self.location.coordinate.latitude] forKey:@"latitude"];
+    [params setValue:[NSNumber numberWithDouble:self.location.coordinate.longitude] forKey:@"longitude"];
+    NSError *error;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
+    [request setHTTPBody:data];
+    NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+        });
+    }];
+    [task resume];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    if (status == kCLAuthorizationStatusDenied) {
+        [_locationManager stopUpdatingLocation];
+    }
+    if (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [_locationManager requestLocation];
+    }
+}
+
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
     request.naturalLanguageQuery = searchBar.text;
@@ -70,17 +126,134 @@
     picker.dataSource = self;
     picker.delegate = self;
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        // TODO
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+        NSURL *url = [NSURL URLWithString:@"http://54.202.127.83/backend/pickup_locations/"];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setHTTPMethod:@"POST"];
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:[NSNumber numberWithDouble:_selectedLoc.location.coordinate.latitude] forKey:@"latitude"];
+        [params setValue:[NSNumber numberWithDouble:_selectedLoc.location.coordinate.longitude] forKey:@"longitude"];
+        NSError *error;
+        NSData *data = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
+        [request setHTTPBody:data];
+        NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self displayMap];
+                [self fetchPickupLocations];
+            });
+        }];
+        [task resume];
     }];
     [alert addAction:action];
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)displayMap {
+    [_mapView removeAnnotations:_mapView.annotations];
+    CLLocationCoordinate2D current = CLLocationCoordinate2DMake(_location.coordinate.latitude, _location.coordinate.longitude);
+    MKPointAnnotation *currentPin = [[MKPointAnnotation alloc] init];
+    currentPin.coordinate = current;
+    currentPin.accessibilityLabel = @"user";
+    CLLocation *selectedLocation = _selectedLoc.location;
+    CLLocationCoordinate2D selected = CLLocationCoordinate2DMake(selectedLocation.coordinate.latitude, selectedLocation.coordinate.longitude);
+    MKPointAnnotation *selectedPin = [[MKPointAnnotation alloc] init];
+    selectedPin.coordinate = selected;
+    [_mapView addAnnotation:currentPin];
+    [_mapView addAnnotation:selectedPin];
+    CLLocationCoordinate2D center = CLLocationCoordinate2DMake((_location.coordinate.latitude + selected.latitude) / 2.0, (_location.coordinate.longitude + selected.longitude) / 2.0);
+    _mapView.region = MKCoordinateRegionMakeWithDistance(center, [_location distanceFromLocation:selectedLocation] + 0.05f, [_location distanceFromLocation:selectedLocation] + 0.05f);
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _candidates = [NSMutableArray array];
-    _searchBar.delegate = self;
+    if (!CLLocationManager.locationServicesEnabled) {
+        return;
+    } else {
+        if (!_locationManager) {
+            _locationManager = [[CLLocationManager alloc] init];
+        }
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        _locationManager.distanceFilter = 500;
+        if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [self.locationManager requestAlwaysAuthorization];
+        }
+        [_locationManager startUpdatingLocation];
+        self.location = [[CLLocation alloc] init];
+        if (!_geocoder) {
+            _geocoder = [[CLGeocoder alloc] init];
+        }
+        _candidates = [NSMutableArray array];
+        _locationManager.delegate = self;
+        _searchBar.delegate = self;
+        _mapView.delegate = self;
+        _tableView.dataSource = _tableView;
+        _tableView.delegate = _tableView;
+        _pickupLocationLoaded = NO;
+        [self fetchPickupLocations];
+    }
+}
+
+- (void)fetchPickupLocations {
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    [[session dataTaskWithURL:[NSURL URLWithString:@"http://54.202.127.83/backend/pickup_locations/"]
+            completionHandler:^(NSData *data, NSURLResponse *resp, NSError *error) {
+                
+                // handle response in the background thread
+                if (data.length > 0 && error == nil) {
+                    _buffer = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+                    
+                    NSInteger max = _buffer.count;
+                    __block NSMutableArray *pickupLocation = [NSMutableArray arrayWithCapacity:10];
+                    __block NSInteger i = max - 1;
+                    __block NSDictionary *json;
+                    
+                    __block __weak void (^weak_apply)(NSArray* placemarks, NSError* error);
+                    void (^apply)(NSArray* placemarks, NSError* error);
+                    
+                    weak_apply = apply = ^(NSArray* placemarks, NSError* error){
+                        
+                        if(error == nil && placemarks.count > 0){
+                            [pickupLocation addObject:[placemarks lastObject]];
+                        }
+                        else if(error){
+                            NSLog(@"Error(%ld): %@", [error code], [error description]);
+                        }
+                        
+                        i--;
+                        if((max - i) <= 3 && i >= 0){
+                            json = [_buffer objectAtIndex:i];
+                            CLLocation *location = [[CLLocation alloc]
+                                                    initWithLatitude:[[json objectForKey:@"latitude"] doubleValue]
+                                                    longitude:[[json objectForKey:@"longitude"] doubleValue]];
+                            [_geocoder reverseGeocodeLocation:location completionHandler:weak_apply];
+                        }
+                        else{
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [_tableView setArrayLocation:[[NSArray alloc]initWithArray:pickupLocation]];
+                                _pickupLocationLoaded = YES;
+                                [_tableView reloadData];
+                            });
+                            NSLog(@"Complete geocoding");
+                        }
+                    };
+                    
+                    json = [_buffer objectAtIndex:i];
+                    CLLocation *location = [[CLLocation alloc]
+                                            initWithLatitude:[[json objectForKey:@"latitude"] doubleValue]
+                                            longitude:[[json objectForKey:@"longitude"] doubleValue]];
+                    [_geocoder reverseGeocodeLocation:location completionHandler:apply];
+                    
+                }
+                else if(error != nil) {
+                    NSLog(@"Error (%li): %@", error.code, error.domain);
+                }
+                
+            }] resume];
 }
 
 - (void)didReceiveMemoryWarning {

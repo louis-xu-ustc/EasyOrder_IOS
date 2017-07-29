@@ -10,4 +10,6 @@
 
 @interface RetailerOrderController : UITableViewController
 
+- (IBAction)poke:(id)sender;
+
 @end

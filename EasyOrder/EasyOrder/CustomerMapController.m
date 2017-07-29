@@ -105,9 +105,8 @@
 }
 
 - (void)updatePickupLocationsETA {
-    
-    __block NSInteger i = 0;
     __block NSInteger bound = _tableView.arrayLocation.count;
+    __block NSInteger i = bound - 1;
     __block MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:_currentLocation.coordinate addressDictionary:nil];
     __block MKMapItem *source = [[MKMapItem alloc] initWithPlacemark:placemark];
     __block NSMutableArray *pickupETAs = [NSMutableArray arrayWithCapacity:10];
@@ -126,8 +125,8 @@
             [pickupETAs addObject:[NSNumber numberWithDouble:-1]];
         }
 
-        i = i + 1;
-        if(i < bound){
+        i--;
+        if((bound - i) <= 3 && i >= 0){
             // TODO
             placemark = [_tableView.arrayLocation objectAtIndex:i];
             MKMapItem *destination = [[MKMapItem alloc] initWithPlacemark:placemark];
@@ -191,7 +190,7 @@
                     
                     NSInteger max = _buffer.count;
                     __block NSMutableArray *pickupLocation = [NSMutableArray arrayWithCapacity:10];
-                    __block NSInteger i = 0;
+                    __block NSInteger i = max - 1;
                     __block NSDictionary *json;
 
                     __block __weak void (^weak_apply)(NSArray* placemarks, NSError* error);
@@ -206,8 +205,8 @@
                             NSLog(@"Error(%ld): %@", [error code], [error description]);
                         }
                         
-                        i = i+1;
-                        if(i < max){
+                        i--;
+                        if((max - i) <= 3 && i >= 0){
                             json = [_buffer objectAtIndex:i];
                             CLLocation *location = [[CLLocation alloc]
                                                     initWithLatitude:[[json objectForKey:@"latitude"] doubleValue]
