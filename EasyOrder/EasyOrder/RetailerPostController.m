@@ -11,7 +11,6 @@
 @interface RetailerPostController ()
 {
     NSArray *_dishes;
-    NSMutableDictionary *quantityDict;
 }
 
 @end
@@ -32,7 +31,6 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     _imageCache = [NSMutableDictionary dictionary];
-    quantityDict = [NSMutableDictionary dictionary];
     self.tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
     [self fetchLatestMenu];
 }
@@ -69,7 +67,7 @@
     
     title.text = [dish objectForKey:@"name"];
     price.text = [NSString stringWithFormat:@"$ %@", [dish objectForKey:@"price"]];
-    quantity.text = [NSString stringWithFormat:@"%d", [quantityDict objectForKey:[dish objectForKey:@"id"]]];
+    quantity.text = [NSString stringWithFormat:@"%d", [[dish objectForKey:@"num"] intValue]];
     UIImage *image = [_imageCache objectForKey:url];
     if (image) {
         imageView.image = image;
@@ -104,7 +102,7 @@
 - (void)fetchLatestMenu {
     NSURLSession *session = [NSURLSession sharedSession];
     
-    [[session dataTaskWithURL:[NSURL URLWithString:@"http://54.202.127.83/backend/dish/"]
+    [[session dataTaskWithURL:[NSURL URLWithString:@"http://54.202.127.83/backend/order/"]
             completionHandler:^(NSData *data, NSURLResponse *resp, NSError *error) {
                 
                 // handle response in the background thread
@@ -121,25 +119,6 @@
                             [self.tableView reloadData];
                         });
                     } //end of if
-                }
-                else if(error != nil) {
-                    NSLog(@"Error (%li): %@", error.code, error.domain);
-                }
-            }] resume];
-    [[session dataTaskWithURL:[NSURL URLWithString:@"http://54.202.127.83/backend/order/"]
-            completionHandler:^(NSData *data, NSURLResponse *resp, NSError *error) {
-                
-                // handle response in the background thread
-                if (data.length > 0 && error == nil) {
-                    NSArray *array = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-                    for(NSDictionary *item in array){
-                        [quantityDict setObject:[item objectForKey:@"num"] forKey:[item objectForKey:@"id"]];
-                    }
-                    if (quantityDict.count > 0) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.tableView reloadData];
-                        });
-                    }
                 }
                 else if(error != nil) {
                     NSLog(@"Error (%li): %@", error.code, error.domain);
