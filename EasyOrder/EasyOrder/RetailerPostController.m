@@ -30,6 +30,10 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 1.5;
+    lpgr.delegate = self;
+    [self.tableView addGestureRecognizer:lpgr];
     _imageCache = [NSMutableDictionary dictionary];
     self.tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
     [self fetchLatestMenu];
@@ -38,6 +42,49 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    
+    if (indexPath == nil) {
+        NSLog(@"long press on table view but not on a row");
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        // UIGestureRecognizerBegan
+    } else {
+        // UIGestureRecognizerEnd
+        NSDictionary *item = [_dishes objectAtIndex:indexPath.row];
+        UIAlertController *dialog = [UIAlertController alertControllerWithTitle:@"Delete Dish" message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", [item objectForKey:@"name"]] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://54.202.127.83/backend/dish/%d", [[item objectForKey:@"id"] intValue]]];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            [request setHTTPMethod:@"DELETE"];
+            NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+            NSError *error;
+            NSData *data = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
+            [request setHTTPBody:data];
+            NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                UIAlertController *done = [UIAlertController alertControllerWithTitle:@"Info" message:@"The dish has been deleted." preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                [done addAction:action];
+                [self presentViewController:done animated:YES completion:nil];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self fetchLatestMenu];
+                });
+            }];
+            [task resume];
+        }];
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
+        
+        [dialog addAction:okAction];
+        [dialog addAction:cancelAction];
+        [self presentViewController:dialog animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Table view data source

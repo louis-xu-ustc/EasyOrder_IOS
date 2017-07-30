@@ -151,7 +151,7 @@
             _location = [_locationManager location];
         }
         CLLocationCoordinate2D center = CLLocationCoordinate2DMake(_selectedLoc.location.coordinate.latitude, _selectedLoc.location.coordinate.longitude);
-        CLCircularRegion *bridge = [[CLCircularRegion alloc] initWithCenter:center radius:1000.0 identifier:@"bridgeFirst"];
+        CLCircularRegion *bridge = [[CLCircularRegion alloc] initWithCenter:center radius:100.0 identifier:@"bridgeFirst"];
         if ([bridge containsCoordinate:self.location.coordinate]) {
             [self sendGeofencingInfo:@"Your order is coming soon. Please prepare to pick it up."];
         }
@@ -164,7 +164,7 @@
 
 - (void)registerGeofencing:(CLPlacemark *)loc {
     CLLocationCoordinate2D center = CLLocationCoordinate2DMake(loc.location.coordinate.latitude, loc.location.coordinate.longitude);
-    CLRegion *bridge = [[CLCircularRegion alloc] initWithCenter:center radius:1000.0 identifier:@"bridge"];
+    CLRegion *bridge = [[CLCircularRegion alloc] initWithCenter:center radius:100.0 identifier:@"bridge"];
     [self.locationManager startMonitoringForRegion:bridge];
 }
 

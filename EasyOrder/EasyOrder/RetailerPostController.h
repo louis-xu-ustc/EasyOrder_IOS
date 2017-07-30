@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <HCSStarRatingView.h>
 
-@interface RetailerPostController : UITableViewController
+@interface RetailerPostController : UITableViewController <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *imageCache;
 
