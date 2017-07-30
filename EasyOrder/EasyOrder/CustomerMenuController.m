@@ -9,6 +9,9 @@
 #import "CustomerMenuController.h"
 #import "CustomerTabBarController.h"
 
+#import <Accounts/Accounts.h>
+#import <Social/Social.h>
+
 @interface CustomerMenuController ()
 {
     NSArray *_dishes;
@@ -27,6 +30,13 @@
     // reduce the left edge insets to adjust image to the left end
     self.tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
     [self fetchLatestMenu];
+    
+    UILongPressGestureRecognizer *lpgr =
+    [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    
+    lpgr.minimumPressDuration = 1.5;
+    lpgr.delegate = self;
+    [self.tableView addGestureRecognizer:lpgr];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -296,6 +306,132 @@
     }
     
     [self.tableView reloadData];
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+    
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    
+    if (indexPath == nil) {
+        NSLog(@"long press on table view but not on a row");
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        // UIGestureRecognizerBegan
+    } else {
+        // UIGestureRecognizerEnd
+        Dish *item = [_rowIndexDishMap objectForKey:[NSString stringWithFormat:@"%li", indexPath.row]];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Share on the Twitter!"
+                                                                       message:[NSString stringWithFormat:@"%@ is delicious.", item.dishName]
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self tweetFeedbackOf:item.dishName];
+        }];
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:okAction];
+        [alert addAction:cancelAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+- (void)tweetFeedbackOf:(NSString *)dishName {
+    
+    // Create an account store
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    
+    // Create an account type
+    ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    // Request Access to the twitter account
+    [accountStore requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *error1){
+        
+        if (granted) {
+            
+            // Create an Account
+            ACAccount *twitterAccount = [[ACAccount alloc] initWithAccountType:twitterAccountType];
+            NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
+            twitterAccount = [accounts lastObject];
+            
+            // Create an NSURL instance variable as Twitter status_update end point.
+            NSURL *twitterPostURL = [[NSURL alloc] initWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
+            
+            // Create a request
+            SLRequest *requestPostTweets = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                              requestMethod:SLRequestMethodPOST
+                                                                        URL:twitterPostURL
+                                                                 parameters:nil];
+            
+            // Set the account to be used with the request
+            [requestPostTweets setAccount:twitterAccount];
+            
+            // Construct a twitter post
+            NSString *tweetMessage = [NSString stringWithFormat:@"@08723Mapp [group 7] %@ is delicious", dishName];
+            
+            [requestPostTweets addMultipartData:[tweetMessage dataUsingEncoding:NSUTF8StringEncoding]
+                                       withName:@"status"
+                                           type:@"multipart/form-data"
+                                       filename:nil];
+            NSLog(@"Tweet: %@", tweetMessage);
+            
+            // Perform the request
+            [requestPostTweets performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error2) {
+                
+                // No NSError is reported
+                if(error2 == nil){
+                    
+                    UIAlertController* dialog;
+                    long statusCode = (long)[urlResponse statusCode];
+                    NSLog(@"HTTP Response: %li", statusCode);
+                    
+                    // an error happens
+                    if(statusCode != 200){
+                        NSDictionary* jsonResponse =
+                        [NSJSONSerialization JSONObjectWithData:responseData
+                                                        options:kNilOptions
+                                                          error:&error2];
+                        
+                        NSArray *errors = [jsonResponse valueForKeyPath:@"errors"];
+                        id err = [errors lastObject];
+                        NSLog(@"Error Code: %@, Message: %@", [err objectForKey:@"code"], [err objectForKey:@"message"]);
+                        
+                        dialog = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Error code: %@", [err objectForKey:@"code"]]
+                                                                     message:[err objectForKey:@"message"]
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+                        
+                        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction * action){}];
+                        
+                        [dialog addAction:defaultAction];
+                        [self presentViewController:dialog animated:YES completion:nil];
+                        
+                    }
+                    else{
+                        dialog = [UIAlertController alertControllerWithTitle:@"Congratulation!" message:@"You have tweeted the face detection result." preferredStyle:UIAlertControllerStyleAlert];
+                        
+                        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+                        
+                        [dialog addAction:defaultAction];
+                        [self presentViewController:dialog animated:YES completion:nil];
+                    }
+                }
+                else{
+                    // Do Something when gets error
+                    // The output of the request is placed in the log.
+                    NSLog(@"NSError: %li, %@", error2.code, error2.description);
+                }
+            }]; // end of performRequestWithHandler: ^block
+        } // If permission is granted
+        else {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"EasyOrder Alert!"
+                                                                           message:@"You must grant access to your Twitter account."
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        } // If permission is not granted, do some error handling ...
+    }];// end of requestAccessToAccountsWithType: ^block
 }
 
 @end

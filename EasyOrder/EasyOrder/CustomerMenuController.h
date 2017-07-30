@@ -11,7 +11,7 @@
 #import "Dish.h"
 #import "CustomerCartController.h"
 
-@interface CustomerMenuController : UITableViewController <CustomerMenuCellDelegate>
+@interface CustomerMenuController : UITableViewController <CustomerMenuCellDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *rowIndexDishMap;
 
