@@ -64,6 +64,12 @@
     UILabel *title = (UILabel *)[cell viewWithTag:3];
     UILabel *price = (UILabel *)[cell viewWithTag:1];
     UILabel *quantity = (UILabel *)[cell viewWithTag:2];
+    HCSStarRatingView *ratingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(0, 0, 150, 15)];
+    ratingView.tintColor = UIColor.orangeColor;
+    ratingView.allowsHalfStars = YES;
+    ratingView.value = [[dish objectForKey:@"rate"] doubleValue];
+    UIView *ratingViewHolder = (UIView *)[cell viewWithTag:5];
+    [ratingViewHolder addSubview:ratingView];
     
     title.text = [dish objectForKey:@"name"];
     price.text = [NSString stringWithFormat:@"$ %@", [dish objectForKey:@"price"]];

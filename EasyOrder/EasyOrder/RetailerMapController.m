@@ -115,6 +115,8 @@
             [_candidates addObject:item.placemark];
         }
         _selectedLoc = [_candidates objectAtIndex:0];
+        [_searchBar endEditing:YES];
+        _searchBar.text = nil;
         [self displayCandidates];
     }];
 }
@@ -140,8 +142,6 @@
         NSData *data = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
         [request setHTTPBody:data];
         NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-            });
         }];
         [task resume];
         [self displayMap];
