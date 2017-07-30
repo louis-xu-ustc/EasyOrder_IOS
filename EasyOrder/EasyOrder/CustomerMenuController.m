@@ -87,6 +87,8 @@
             if (dataResp) {
                 UIImage *image = [UIImage imageWithData:dataResp];
                 
+                item.dishImage = image;
+                
                 CGSize size = image.size;
                 NSInteger side = MIN(size.width, size.height);
                 CGRect rect = CGRectMake(0, 0, side, side);
@@ -324,7 +326,9 @@
                                                                        message:[NSString stringWithFormat:@"%@ is delicious.", item.dishName]
                                                                 preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self tweetFeedbackOf:item.dishName];
+//            [self tweetFeedbackOf:item.dishName];
+            NSLog(@"%@", item.dishImage);
+            [self tweetFeedbackWithImage:item.dishName image:item.dishImage];
         }];
         UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
         
@@ -432,6 +436,105 @@
             [self presentViewController:alert animated:YES completion:nil];
         } // If permission is not granted, do some error handling ...
     }];// end of requestAccessToAccountsWithType: ^block
+}
+
+- (void)tweetFeedbackWithImage:(NSString *)dishName image:(UIImage *)dishImage {
+    // Create an account store
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    
+    // Create an account type
+    ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    // Request Access to the twitter account
+    [accountStore requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *error1){
+        
+        if (granted) {
+            
+            // Create an Account
+            ACAccount *twitterAccount = [[ACAccount alloc] initWithAccountType:twitterAccountType];
+            NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
+            twitterAccount = [accounts lastObject];
+            
+            // Create an NSURL instance variable as Twitter status_update end point.
+            NSURL *twitterUploadURL = [[NSURL alloc] initWithString:@"https://upload.twitter.com/1.1/media/upload.json"];
+            
+            // base64 image
+            NSString *base64 = [UIImagePNGRepresentation(dishImage) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+            
+            // Create a request
+            SLRequest *requestUploadImage = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                              requestMethod:SLRequestMethodPOST
+                                                                        URL:twitterUploadURL
+                                                                 parameters:@{@"media_data": base64}];
+            
+            // Set the account to be used with the request
+            [requestUploadImage setAccount:twitterAccount];
+            [requestUploadImage performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error2) {
+                
+                    long statusCode = (long)[urlResponse statusCode];
+
+                    // an error happens
+                    if(statusCode == 200){
+                        
+                        NSDictionary* json =
+                        [NSJSONSerialization JSONObjectWithData:responseData
+                                                        options:kNilOptions
+                                                          error:&error2];
+                        
+                        NSLog(@"Response: %@", json);
+                        NSString *media_id_str = [json objectForKey:@"media_id_string"];
+                        
+                        // Create an NSURL instance variable as Twitter status_update end point.
+                        NSURL *twitterPostURL = [[NSURL alloc] initWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
+                        
+                        // Construct a twitter post
+                        NSString *tweetMessage = [NSString stringWithFormat:@"@08723Mapp [group 7] %@ is delicious", dishName];
+                        
+                        // Create a request
+                        SLRequest *requestPostTweets =
+                        [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                           requestMethod:SLRequestMethodPOST
+                                                     URL:twitterPostURL
+                                              parameters:@{@"media_ids":media_id_str,@"status":tweetMessage}];
+                        
+                        // Set the account to be used with the request
+                        [requestPostTweets setAccount:twitterAccount];
+                        [requestPostTweets performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error3){
+                            
+                            UIAlertController* dialog;
+                            long statusCode = (long)[urlResponse statusCode];
+        
+                            // an error happens
+                            if(statusCode == 200){
+                                NSLog(@"Successfully upload image");
+                                dialog = [UIAlertController
+                                          alertControllerWithTitle:@"Congratulation!"
+                                          message:@"You just share a dish."
+                                          preferredStyle:UIAlertControllerStyleAlert];
+                            }
+                            else{
+                                dialog = [UIAlertController
+                                          alertControllerWithTitle:@"Twitter error!"
+                                          message:@"Failed to post with media."
+                                          preferredStyle:UIAlertControllerStyleAlert];
+                            }
+                            
+                            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+                            [dialog addAction:defaultAction];
+                            [self presentViewController:dialog animated:YES completion:nil];
+                        }];
+                    }
+                    else{
+                        UIAlertController* dialog = [UIAlertController alertControllerWithTitle:@"Twitter error!"
+                                                              message:@"Failed to upload media."
+                                                       preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+                        [dialog addAction:defaultAction];
+                        [self presentViewController:dialog animated:YES completion:nil];
+                    }
+            }];
+        }
+    }];
 }
 
 @end
